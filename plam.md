@@ -50,6 +50,7 @@
   - https://diary.shuichi.tech/entry/2017/03/31/225633
   - http://www.tohoho-web.com/ex/shell.html
   - http://www.coins.tsukuba.ac.jp/~yas/coins/literacy-2018/2018-06-08/
+  - https://nafuka.hatenablog.com/entry/2021/03/29/194200
 
 - fork
   - https://kaworu.jpn.org/c/%E3%83%97%E3%83%AD%E3%82%BB%E3%82%B9%E3%81%AE%E4%BD%9C%E6%88%90_fork
