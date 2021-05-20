@@ -1,0 +1,12 @@
+test
+bash: b=c: command not found
+bash: q=r: command not found
+
+a | grep a
+a
+abc
+a
+bash: syntax error near unexpected token `newline'
+
+; a
+abcabc
