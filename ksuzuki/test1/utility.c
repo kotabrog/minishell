@@ -32,9 +32,30 @@ char	*ft_strndup(const char *s, ssize_t n)
 		n = 0;
 	else if (n < 0)
 		n = ft_strlen(s);
-	if ((p = (char *)malloc(n + 1)) == NULL)
+	p = (char *)malloc(n + 1);
+	if (p == NULL)
 		return (NULL);
 	ft_strcpy(p, s, n);
 	p[n] = '\0';
 	return (p);
+}
+
+int	ft_strndup_ex(char **dest, const char *s, ssize_t n)
+{
+	if (s == NULL)
+		n = 0;
+	else if (n < 0)
+		n = ft_strlen(s);
+	*dest = (char *)malloc(n + 1);
+	if (*dest == NULL)
+		return (ERROR);
+	ft_strcpy(*dest, s, n);
+	(*dest)[n] = '\0';
+	return (SUCCESS);
+}
+
+int	ft_isspace(const char c)
+{
+	return (c == ' ' || c == '\f' || c == '\n' || \
+			c == '\r' || c == '\t' || c == '\v');
 }

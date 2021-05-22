@@ -12,9 +12,9 @@
 
 #include "minishell.h"
 
-static size_t ft_strchar(char *s, char c)
+static size_t	ft_strchar(char *s, char c)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (s[i])
@@ -26,9 +26,9 @@ static size_t ft_strchar(char *s, char c)
 	return (i);
 }
 
-static char *ft_strjoin(char *s1, char *s2, ssize_t n1, ssize_t n2)
+static char	*ft_strjoin(char *s1, char *s2, ssize_t n1, ssize_t n2)
 {
-	char *p;
+	char	*p;
 
 	if (n1 == -1)
 		n1 = ft_strlen(s1);
@@ -41,11 +41,11 @@ static char *ft_strjoin(char *s1, char *s2, ssize_t n1, ssize_t n2)
 	return (p);
 }
 
-static int ft_put_line(char **line, char **memo, char *buf)
+static int	ft_put_line(char **line, char **memo, char *buf)
 {
-	int flag;
-	size_t n;
-	char *temp;
+	int		flag;
+	size_t	n;
+	char	*temp;
 
 	n = ft_strchar(buf, '\n');
 	temp = ft_strjoin(*line, buf, -1, n);
@@ -67,11 +67,11 @@ static int ft_put_line(char **line, char **memo, char *buf)
 	return (flag);
 }
 
-static int get_next_line(char **line, char **memo)
+static int	get_next_line(char **line, char **memo)
 {
-	int flag;
-	char *buf;
-	ssize_t n;
+	int		flag;
+	char	*buf;
+	ssize_t	n;
 
 	flag = 0;
 	if (ft_malloc(&buf, sizeof(char), BUFF_SIZE + 1))
@@ -93,7 +93,7 @@ static int get_next_line(char **line, char **memo)
 	return (flag);
 }
 
-int read_input(char **s, char **memo)
+int	read_input(char **s, char **memo)
 {
 	int			flag;
 

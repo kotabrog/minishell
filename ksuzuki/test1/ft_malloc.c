@@ -27,6 +27,19 @@ int	ft_free(void *pointer)
 	return (SUCCESS);
 }
 
+int	ft_free_double_char(char ***pointer)
+{
+	char	**temp;
+
+	if (pointer == NULL)
+		return (SUCCESS);
+	temp = *pointer;
+	while (*temp)
+		free(*(temp++));
+	ft_free(pointer);
+	return (SUCCESS);
+}
+
 int	expand_malloc(char **s, size_t cpy_n, size_t after_n)
 {
 	char	*temp;
