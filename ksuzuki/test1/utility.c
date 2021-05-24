@@ -24,6 +24,44 @@ void	ft_strcpy(char *p, const char *s, size_t n)
 	}
 }
 
+int	ft_strlen_ex(char **s)
+{
+	int	n;
+
+	n = 0;
+	while (s[n])
+		++n;
+	return (n);
+}
+
+char	**ft_strdup_ex(char **s)
+{
+	char	**p;
+	int		n;
+	int		i;
+
+	n = ft_strlen_ex(s);
+	if (ft_malloc(&p, sizeof(char *), n + 1))
+		return (NULL);
+	i = 0;
+	while (i < n)
+	{
+		p[i] = ft_strdup(s[i]);
+		if (p[i] == NULL)
+			break ;
+		++i;
+	}
+	if (i != n)
+	{
+		while (i--)
+			free(p[i]);
+		free(p);
+		return (NULL);
+	}
+	p[n] = NULL;
+	return (p);
+}
+
 char	*ft_strndup(const char *s, ssize_t n)
 {
 	char	*p;
@@ -58,4 +96,14 @@ int	ft_isspace(const char c)
 {
 	return (c == ' ' || c == '\f' || c == '\n' || \
 			c == '\r' || c == '\t' || c == '\v');
+}
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	while (*s1 && *s1 == *s2)
+	{
+		++s1;
+		++s2;
+	}
+	return (*s1 - *s2);
 }

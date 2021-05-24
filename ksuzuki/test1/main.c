@@ -12,36 +12,30 @@
 
 #include "minishell.h"
 
-int	read_parse_command(char **s, char **memo, char ***split)
+int	read_parse_command(char **s, char **memo, char ***split, t_tree **tree)
 {
 	char	*command;
 	char	**split_command;
 	int		flag;
 
-	flag = read_input(&command, memo);
-	if (flag == ERROR)
-		return (ERROR);
+	if (read_input(&command, memo) == ERROR)
+		return (error_put(ERROR, NULL));
 	flag = read_command_split(&split_command, command);
-	if (flag == ERROR)
+	if (flag)
 	{
 		ft_free(&command);
-		return (ERROR);
+		return (error_put(flag, NULL));
+	}
+	flag = read_command2tree(tree, split_command);
+	if (flag)
+	{
+		ft_free(&command);
+		ft_free_double_char(&split_command);
+		return (error_put(flag, NULL));
 	}
 	*s = command;
 	*split = split_command;
 	return (SUCCESS);
-}
-
-void	debug_print(char *s, char **split)
-{
-	ft_putstr_fd(s, 1);
-	write(1, "\n", 1);
-	while (*split)
-	{
-		printf("%ld\n", ft_strlen(*split));
-		ft_putstr_fd(*split++, 1);
-		write(1, "\n", 1);
-	}
 }
 
 int	loop_shell(void)
@@ -49,15 +43,19 @@ int	loop_shell(void)
 	char	*s;
 	char	*memo;
 	char	**split;
+	int		flag;
+	t_tree	*tree;
 
 	memo = NULL;
 	while (TRUE)
 	{
-		if (read_parse_command(&s, &memo, &split))
+		if (read_parse_command(&s, &memo, &split, &tree))
 			continue ;
-		debug_print(s, split);
+		// debug_print_split(s, split);
+		debug_tree(tree);
 		ft_free(&s);
-		ft_free(&split);
+		ft_free_double_char(&split);
+		tree_free(&tree);
 	}
 	free(memo);
 }

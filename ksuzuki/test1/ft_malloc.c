@@ -44,7 +44,7 @@ int	expand_malloc(char **s, size_t cpy_n, size_t after_n)
 {
 	char	*temp;
 
-	if (ft_malloc(&temp, sizeof(*temp), after_n))
+	if (ft_malloc(&temp, sizeof(char), after_n))
 		return (ERROR);
 	ft_strcpy(temp, *s, cpy_n);
 	ft_free(s);
