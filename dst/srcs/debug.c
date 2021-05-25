@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 21:11:02 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/05/25 21:05:00 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/05/25 22:06:44 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ void	debug_command(t_command *command)
 	int		*fd;
 
 	if (command->flag == 0)
-		write(1, "command\n", 8);
+		ft_putstr_fd("----command\n", 1);
 	else if (command->flag == SEMICOLON)
-		write(1, "semi colon\n", 11);
+		ft_putstr_fd("----semi colon\n", 1);
 	else if (command->flag == PIPE)
-		write(1, "pipe\n", 5);
+		ft_putstr_fd("----pipe\n", 1);
 	if (command->s && *(command->s))
 	{
 		temp = command->s;
@@ -47,7 +47,7 @@ void	debug_command(t_command *command)
 	}
 	if (command->file && *(command->file))
 	{
-		ft_putstr_fd("file\n", 1);
+		ft_putstr_fd("--file\n", 1);
 		temp = command->file;
 		fd = command->fd;
 		while (*temp)

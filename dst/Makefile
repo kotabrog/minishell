@@ -11,6 +11,7 @@ SRCNAME	=	command_utility1.c\
 			tree_utility1.c\
 			utility1.c\
 			utility2.c\
+			status_utility.c\
 
 SRCS	= $(addprefix $(SRCDIR), $(SRCNAME))
 OBJS	= $(SRCS:.c=.o)

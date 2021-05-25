@@ -58,6 +58,11 @@ typedef struct s_tree {
 	struct s_tree	*right;
 }					t_tree;
 
+typedef struct s_status {
+	t_tree		*tree;
+	char		*memo;
+}					t_status;
+
 int		read_input(char **s, char **memo);
 int		read_command_split(char ***split, char *s);
 int		read_command(char **split, t_command *com, int *id);
@@ -71,6 +76,10 @@ int		tree_init(t_tree **tree, int flag);
 int		tree_free(t_tree **tree);
 int		tree_add(t_tree *tree, int flag, int is_right);
 int		tree_add_parent(t_tree **tree, int flag, int is_right);
+
+int		status_init(t_status **status);
+int		status_turn_finish(t_status *status);
+int		status_finish(t_status *status);
 
 void	error_if(int flag, int err_num, char *command, int exit_flag);
 void	error_process(int err_num, char *command, int exit_flag);

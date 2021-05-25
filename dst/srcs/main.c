@@ -40,20 +40,20 @@ int	read_parse_command(char **s, char **memo, t_tree **tree)
 
 int	loop_shell(void)
 {
-	char	*s;
-	char	*memo;
-	t_tree	*tree;
+	char		*s;
+	t_status	*status;
 
-	memo = NULL;
+	if (status_init(&status))
+		error_put(errno, NULL);
 	while (TRUE)
 	{
-		if (read_parse_command(&s, &memo, &tree))
+		if (read_parse_command(&s, &(status->memo), &(status->tree)))
 			continue ;
-		debug_tree(tree);
+		debug_tree(status->tree);
 		ft_free(&s);
-		tree_free(&tree);
+		status_turn_finish(status);
 	}
-	free(memo);
+	status_finish(status);
 }
 
 int	main(void)
