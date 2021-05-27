@@ -49,7 +49,8 @@ int	loop_shell(void)
 	{
 		if (read_parse_command(&s, &(status->memo), &(status->tree)))
 			continue ;
-		debug_tree(status->tree);
+		process_tree(status, status->tree);
+		// debug_tree(status->tree);
 		ft_free(&s);
 		status_turn_finish(status);
 	}

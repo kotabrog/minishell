@@ -68,6 +68,8 @@ int		read_command_split(char ***split, char *s);
 int		read_command(char **split, t_command *com, int *id);
 int		read_command2tree(t_tree **root, char **split);
 
+int		process_tree(t_status *status, t_tree *tree);
+
 int		command_init(t_command **command, int flag);
 int		command_free(t_command **command);
 int		command_dup(t_command *command);

@@ -22,3 +22,10 @@ echo x > a > b
 cat a
 cat b
 # x
+export a=" "
+echo$a-a
+# -a
+echo"$a"-a
+# bash: echo -a: command not found
+echo'$a'-a
+# bash: echo$a-a: command not found
