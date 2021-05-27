@@ -12,7 +12,7 @@ echo x > $?
 echo x >> $?
 echo x < $?
 # x
-bash-3.2$ echo x < ttt
+echo x < ttt
 # bash: ttt: No such file or directory
 echo x > text  a; cat text
 # x a
