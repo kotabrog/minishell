@@ -29,3 +29,12 @@ echo"$a"-a
 # bash: echo -a: command not found
 echo'$a'-a
 # bash: echo$a-a: command not found
+echo x | a
+# bash: a: command not found
+echo $?
+# 127
+a | echo x
+# bash: a: command not found
+# x
+echo $?
+# 0

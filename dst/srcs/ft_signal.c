@@ -1,36 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   status_utility.c                                   :+:      :+:    :+:   */
+/*   ft_signal.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/25 21:54:18 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/05/29 12:14:32 by ksuzuki          ###   ########.fr       */
+/*   Created: 2021/05/29 12:50:35 by ksuzuki           #+#    #+#             */
+/*   Updated: 2021/05/29 14:30:24 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	status_init(t_status **status, char **envp)
+int	get_wait_status(int status)
 {
-	if (ft_malloc(status, sizeof(t_status), 1))
-		return (errno);
-	(*status)->tree = NULL;
-	(*status)->memo = NULL;
-	(*status)->env = envp;
-	return (SUCCESS);
-}
-
-int	status_turn_finish(t_status *status)
-{
-	tree_free(&(status->tree));
-	return (SUCCESS);
-}
-
-int	status_finish(t_status *status)
-{
-	free(status->memo);
-	free(status);
-	return (SUCCESS);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	if (WIFSIGNALED(status))
+		return (WTERMSIG(status));
+	return (ERROR);
 }

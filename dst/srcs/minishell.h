@@ -28,6 +28,7 @@
 # define ERROR -1
 # define READ 0
 # define WRITE 1
+# define STDERR 2
 
 # define BUFF_SIZE 1024
 # define MAX_FD 256
@@ -43,13 +44,16 @@
 # define ERROR_TOKEN_PIPE -7
 # define ERROR_TOKEN_NEWLINE -8
 # define ERROR_MULTILINE -9
+# define ERROR_ARGMENT -10
+# define ERROR_COM_NOT_FOUND -11
 
 typedef struct s_command {
 	char	**s;
 	char	**file;
 	int		*fd;
-	int		pipefd[2];
 	int		flag;
+	int		pipefd[2];
+	int		pid[2];
 }			t_command;
 
 typedef struct s_tree {
@@ -60,6 +64,7 @@ typedef struct s_tree {
 
 typedef struct s_status {
 	t_tree		*tree;
+	char		**env;
 	char		*memo;
 }					t_status;
 
@@ -69,6 +74,14 @@ int		read_command(char **split, t_command *com, int *id);
 int		read_command2tree(t_tree **root, char **split);
 
 int		process_tree(t_status *status, t_tree *tree);
+int		process_pipe(t_status *status, t_tree *tree, \
+		int parentfd[2]);
+int		process_command(t_status *status, t_tree *tree, int parent[2], \
+		int fork_flag);
+
+void	redirect_init(int fd[3], int fork_flag);
+int		redirect_set(int fd[3], char **file, int *tofd, int fork_flag);
+int		redirect_close(int fd[3], int flag);
 
 int		command_init(t_command **command, int flag);
 int		command_free(t_command **command);
@@ -79,7 +92,7 @@ int		tree_free(t_tree **tree);
 int		tree_add(t_tree *tree, int flag, int is_right);
 int		tree_add_parent(t_tree **tree, int flag, int is_right);
 
-int		status_init(t_status **status);
+int		status_init(t_status **status, char **envp);
 int		status_turn_finish(t_status *status);
 int		status_finish(t_status *status);
 
@@ -92,6 +105,11 @@ int		ft_malloc(void *pointer, size_t type_size, size_t n);
 int		ft_free(void *pointer);
 int		expand_malloc(char **s, size_t cpy_n, size_t after_n);
 int		ft_free_double_char(char ***pointer);
+
+int		ft_close(int *fd);
+int		multi_close(int *fd1, int *fd2, int *fd3, int *fd4);
+
+int		get_wait_status(int status);
 
 void	ft_strcpy(char *p, const char *s, size_t n);
 int		ft_strlen_ex(char **s);

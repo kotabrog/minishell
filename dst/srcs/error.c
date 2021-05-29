@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 15:11:14 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/05/25 21:14:24 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/05/29 14:36:04 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ char	*error_make_massage(int n)
 	err_str[7] = "syntax error near unexpected token `|'";
 	err_str[8] = "syntax error near unexpected token `newline'";
 	err_str[9] = "Multiline is not supported.";
+	err_str[10] = "No arguments are accepted.";
+	err_str[11] = "command not found.";
 	return (err_str[n]);
 }
 
@@ -36,10 +38,14 @@ int	error_put(int err_num, char *command)
 		error_massage = error_make_massage(-err_num);
 	else
 		error_massage = strerror(err_num);
+	ft_putstr_fd("minishell: ", STDERR);
 	if (command)
-		printf("minishell: %s: %s\n", command, error_massage);
-	else
-		printf("minishell: %s\n", error_massage);
+	{
+		ft_putstr_fd(command, STDERR);
+		ft_putstr_fd(": ", STDERR);
+	}
+	ft_putstr_fd(error_massage, STDERR);
+	ft_putstr_fd("\n", STDERR);
 	return (err_num);
 }
 
