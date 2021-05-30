@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 20:55:23 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/05/29 17:14:41 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/05/30 13:15:00 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	process_command(t_status *status, t_tree *tree, int parent[2], \
 			tree->command->fd, fork_flag);
 	if (!flag)
 		flag = choice_command(status, tree->command);
-	flag = redirect_close(fd, flag);
+	flag = redirect_close(fd, flag, fork_flag);
 	if (fork_flag)
 		exit(flag);
 	else

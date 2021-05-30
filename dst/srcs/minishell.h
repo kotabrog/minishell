@@ -19,6 +19,7 @@
 # include <errno.h>
 # include <string.h>
 # include <sys/wait.h>
+# include <fcntl.h>
 
 # include "../libft/libft.h"
 
@@ -81,7 +82,7 @@ int		process_command(t_status *status, t_tree *tree, int parent[2], \
 
 void	redirect_init(int fd[3], int fork_flag);
 int		redirect_set(int fd[3], char **file, int *tofd, int fork_flag);
-int		redirect_close(int fd[3], int flag);
+int		redirect_close(int fd[3], int flag, int fork_flag);
 
 int		command_init(t_command **command, int flag);
 int		command_free(t_command **command);
