@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 15:11:14 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/05/30 16:29:22 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/05/30 18:15:51 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,8 @@ char	*error_make_massage(int n)
 	err_str[6] = "syntax error near unexpected token `;'";
 	err_str[7] = "syntax error near unexpected token `|'";
 	err_str[8] = "syntax error near unexpected token `newline'";
-	err_str[9] = "Multiline is not supported.";
-	err_str[10] = "No arguments are accepted.";
-	err_str[11] = "command not found.";
+	err_str[9] = "Multiline is not supported";
+	err_str[10] = "No arguments are accepted";
 	return (err_str[n]);
 }
 

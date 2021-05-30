@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 20:53:33 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/05/29 22:34:38 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/05/30 17:55:10 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	process_pipe(t_status *status, t_tree *tree, int parentfd[2])
 		if (pid == -1)
 			break ;
 		if (pid_search_close(tree, pid) && !flag)
-			flag = get_wait_status(wait_status);
+			flag = wait_status;
 	}
 	return (flag);
 }

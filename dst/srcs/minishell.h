@@ -70,6 +70,7 @@ typedef struct s_status {
 	int			exit;
 }					t_status;
 
+int		read_parse_command(t_status *status, char **s, char **memo, t_tree **tree);
 int		read_input(char **s, char **memo);
 int		read_command_split(char ***split, char *s);
 int		read_command(char **split, t_command *com, int *id);
@@ -84,6 +85,8 @@ int		process_command(t_status *status, t_tree *tree, int parent[2], \
 void	redirect_init(int fd[3], int fork_flag);
 int		redirect_set(int fd[3], char **file, int *tofd, int fork_flag);
 int		redirect_close(int fd[3], int flag, int fork_flag);
+
+int		set_exit_status(t_status *status, int flag);
 
 int		command_init(t_command **command, int flag);
 int		command_free(t_command **command);
