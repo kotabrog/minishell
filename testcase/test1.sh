@@ -38,3 +38,30 @@ a | echo x
 # x
 echo $?
 # 0
+>
+# syntax error near unexpected token `newline'
+echo $?
+# 258
+/bin
+# bash: /bin: is a directory
+echo $?
+# 126
+a
+# bash: a: command not found
+echo $?
+# 127
+bash
+exit 1.1
+# bash: exit: 1.1: numeric argument required
+echo $?
+# 255
+sleep 10
+^C
+echo $?
+# 130
+echo x | exit a
+# bash: exit: a: numeric argument required
+echo $?
+# 255
+exit 1 ; echo x
+# exit

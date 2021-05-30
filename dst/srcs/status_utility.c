@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/25 21:54:18 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/05/29 12:14:32 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/05/30 14:51:55 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	status_init(t_status **status, char **envp)
 	(*status)->tree = NULL;
 	(*status)->memo = NULL;
 	(*status)->env = envp;
+	(*status)->exit = 0;
 	return (SUCCESS);
 }
 

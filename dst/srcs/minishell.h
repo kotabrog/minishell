@@ -67,6 +67,7 @@ typedef struct s_status {
 	t_tree		*tree;
 	char		**env;
 	char		*memo;
+	int			exit;
 }					t_status;
 
 int		read_input(char **s, char **memo);
@@ -100,6 +101,7 @@ int		status_finish(t_status *status);
 void	error_if(int flag, int err_num, char *command, int exit_flag);
 void	error_process(int err_num, char *command, int exit_flag);
 int		error_put(int err_num, char *command);
+int		error_put2(int err_num, char *com1, char *com2);
 char	*error_make_massage(int n);
 
 int		ft_malloc(void *pointer, size_t type_size, size_t n);
