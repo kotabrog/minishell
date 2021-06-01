@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 20:55:23 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/05/30 13:15:00 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/05/30 18:29:52 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,10 @@ int	process_execute(t_status *status, t_command *com)
 		exit(errno);
 	}
 	pid = wait(&wait_status);
-	wait_status = get_wait_status(wait_status);
-	if (wait_status == ENOENT)
+	if (WIFEXITED(wait_status) && WEXITSTATUS(wait_status) == ENOENT)
 	{
-		wait_status = ERROR_COM_NOT_FOUND;
-		error_put(ERROR_COM_NOT_FOUND, com->s[0]);
+		wait_status = ERROR_NOT_FOUND;
+		error_put(wait_status, com->s[0]);
 	}
 	return (wait_status);
 }

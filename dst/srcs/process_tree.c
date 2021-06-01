@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 18:16:50 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/05/29 22:38:02 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/05/30 18:08:12 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,11 @@ int	process_tree(t_status *status, t_tree *tree)
 
 	fd[0] = -1;
 	fd[1] = -1;
-	if (tree == NULL)
-		return (SUCCESS);
 	if (tree->command->flag == SEMICOLON)
 		flag = process_semicolon(status, tree);
 	else if (tree->command->flag == PIPE)
 		flag = process_pipe(status, tree, fd);
 	else
 		flag = process_command(status, tree, fd, FALSE);
-	return (flag);
+	return (set_exit_status(status, flag));
 }
