@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 16:12:43 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/05/25 19:33:00 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/05/29 22:16:34 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,10 @@ int	command_init(t_command **command, int flag)
 	(*command)->file = NULL;
 	(*command)->flag = flag;
 	(*command)->fd = NULL;
-	(*command)->pipefd[0] = READ;
-	(*command)->pipefd[1] = WRITE;
+	(*command)->pipefd[0] = -1;
+	(*command)->pipefd[1] = -1;
+	(*command)->pid[0] = -1;
+	(*command)->pid[1] = -1;
 	return (SUCCESS);
 }
 

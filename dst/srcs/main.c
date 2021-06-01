@@ -38,25 +38,32 @@ int	read_parse_command(char **s, char **memo, t_tree **tree)
 	return (SUCCESS);
 }
 
-int	loop_shell(void)
+void	loop_shell(t_status *status)
 {
-	char		*s;
-	t_status	*status;
+	char	*s;
+	int		flag;
 
-	if (status_init(&status))
-		error_put(errno, NULL);
 	while (TRUE)
 	{
+		flag = 0;
 		if (read_parse_command(&s, &(status->memo), &(status->tree)))
 			continue ;
+		flag = process_tree(status, status->tree);
+		printf("%d\n", flag);
 		debug_tree(status->tree);
 		ft_free(&s);
 		status_turn_finish(status);
 	}
-	status_finish(status);
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
-	loop_shell();
+	t_status	*status;
+	int			flag;
+
+	error_if(argc != 1 || !**argv, ERROR_ARGMENT, NULL, TRUE);
+	flag = status_init(&status, envp);
+	error_if(flag, flag, NULL, TRUE);
+	loop_shell(status);
+	status_finish(status);
 }
