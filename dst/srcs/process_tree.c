@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 18:16:50 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/05/30 18:08:12 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/01 22:14:06 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,11 @@ int	process_tree(t_status *status, t_tree *tree)
 		flag = process_pipe(status, tree, fd);
 	else
 		flag = process_command(status, tree, fd, FALSE);
+	if (g_signal->signal_flag)
+	{
+		ft_putchar_fd('\n', 1);
+		flag = g_signal->signal_flag + SIGNAL_VALUE;
+		set_signal(1);
+	}
 	return (set_exit_status(status, flag));
 }
