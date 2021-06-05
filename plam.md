@@ -20,8 +20,8 @@
   - [x] パイプの実行
   - [x] リダイレクト
 - 機能実装
-  - echo
-  - echo -n
+  - [x] echo
+  - [x] echo -n
   - cd
   - pwd
   - export

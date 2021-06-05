@@ -20,7 +20,8 @@ SRCNAME	=	command_utility1.c\
 			redirect.c\
 			read_parse_command.c\
 			exit_status.c\
-			exit.c
+			exit.c\
+			echo.c\
 
 SRCS	= $(addprefix $(SRCDIR), $(SRCNAME))
 OBJS	= $(SRCS:.c=.o)

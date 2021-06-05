@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 20:55:23 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/05 14:37:59 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/05 15:48:24 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ static int	choice_command(t_status *status, t_command *com, int fork_flag)
 		return (SUCCESS);
 	if (ft_strcmp(com->s[0], "exit") == 0)
 		return (builtin_exit(status, com, fork_flag));
+	if (ft_strcmp(com->s[0], "echo") == 0)
+		return (builtin_echo(com));
 	if (ft_strcmp(com->s[0], "loop") == 0)
 		while (TRUE)
 			;
