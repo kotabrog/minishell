@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 23:28:46 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/04 23:50:53 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/05 14:09:55 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,9 @@ int	builtin_exit(t_status *status, t_command *com, int fork_flag)
 	int				flag;
 
 	flag = 0;
-	if (com == NULL || com->s[1] == NULL)
+	if (com == NULL && g_signal->signal_flag)
+		arg = 1;
+	else if (com == NULL || com->s[1] == NULL)
 		arg = status->exit;
 	else
 		flag = check_int(com->s[1], &arg);

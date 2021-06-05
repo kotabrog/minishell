@@ -78,6 +78,7 @@ typedef struct s_status {
 typedef struct s_global {
 	int		signal_flag;
 	t_tree	*tree;
+	int		exit_pid;
 }					t_global;
 
 extern t_global		*g_signal;
@@ -106,6 +107,7 @@ void		signal_reset(void);
 
 int			set_exit_status(t_status *status, int flag);
 int			status_value_conversion(int flag);
+int			wait_conversion(int flag);
 
 int			builtin_exit(t_status *status, t_command *com, int fork_flag);
 

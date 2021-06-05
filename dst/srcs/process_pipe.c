@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 20:53:33 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/04 19:42:18 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/05 14:36:36 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,13 @@ int	process_pipe(t_status *status, t_tree *tree, int parentfd[2])
 		if (pid == -1)
 			break ;
 		if (pid_search_close(tree, pid) && !flag)
-			flag = wait_status;
+			flag = wait_conversion(wait_status);
+	}
+	if (g_signal->signal_flag)
+	{
+		ft_putchar_fd('\n', 1);
+		if (tree->command->flag == PIPE)
+			flag = g_signal->signal_flag + SIGNAL_VALUE;
 	}
 	return (flag);
 }

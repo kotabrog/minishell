@@ -6,18 +6,25 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/30 16:41:22 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/05 00:06:53 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/05 14:13:43 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	wait_conversion(int flag)
+{
+	if (flag == ERROR_NOT_FOUND)
+		return (127);
+	if (WIFEXITED(flag))
+		return (WEXITSTATUS(flag));
+	if (WIFSIGNALED(flag))
+		return (WTERMSIG(flag) + SIGNAL_VALUE);
+	return (EXIT_FAILURE);
+}
+
 static int	calc_signal_and_mod(long long int num)
 {
-	if (WIFEXITED(num))
-		return (WEXITSTATUS(num));
-	if (WIFSIGNALED(num))
-		return (WTERMSIG(num) + SIGNAL_VALUE);
 	if (num >= 0)
 		return (num % 256);
 	else

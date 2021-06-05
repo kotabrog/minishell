@@ -15,7 +15,7 @@ void handler(int signum)
 
 static void	input_handler(int signum)
 {
-	char	eof[1];
+	// char	eof[1];
 
 	// int fd = dup(0);
 	// close(0);
@@ -44,26 +44,40 @@ int main()
 	printf("%d\n", -5 % 3);
 
 		// while (!a);
-	// pid = fork();
+	pid = fork();
 	// if (pid == -1)
 	// 	return (errno);
-	// if (pid == 0)
-	// {
-	// 	while (!a);
-	// 	exit(a);
-	// }
-	// pid = wait(&status);
-	sleep(3);
-	n = read(0, buf, 100);
+	if (pid == 0)
+	{
+		// if (signal(SIGINT, SIG_IGN) == SIG_ERR)
+		// 	return (errno);
+		char *new_argv[] = {"/bin/sleep", "5", 0};
+		char *envp[] = {0};
+		execve(new_argv[0], new_argv, envp);
+		// while (!a);
+		// printf("%d\n", a);
+		exit(a);
+	}
+	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
+		return (errno);
+	pid = wait(&status);
+	if (WIFEXITED(status))
+		status = WEXITSTATUS(status);
+	if (WIFSIGNALED(status))
+		status = WTERMSIG(status) + 128;
+	printf("%d\n", status);
+	printf("%d\n", a);
+	// sleep(3);
+	// n = read(0, buf, 100);
 	// dup2(a, 0);
 	// n = read(0, buf, 2);
-	if (n > 0)
-	{
-		// if (a)
-		// 	write(1, "ok\n", 3);
-		buf[n] = 0;
-		printf("%d, %s\n", n, buf);
-	}
+	// if (n > 0)
+	// {
+	// 	// if (a)
+	// 	// 	write(1, "ok\n", 3);
+	// 	buf[n] = 0;
+	// 	printf("%d, %s\n", n, buf);
+	// }
 	printf("end\n");
 	// n = read(0, buf, 1);
 	// printf("end\n");
@@ -73,6 +87,7 @@ int main()
 	// 	printf("exit: %d\n", WEXITSTATUS(status));
 	// if (WIFSIGNALED(status))
 	// 	printf("signal: %d\n", WTERMSIG(status));
+	write(1, "\n", 1);
 
 	return (0);
 }
