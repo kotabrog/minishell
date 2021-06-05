@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 20:55:23 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/05 15:48:24 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/05 18:54:16 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	process_execute(t_status *status, t_command *com, int fork_flag)
 	}
 	if (fork_flag)
 		g_signal->exit_pid = pid;
-	pid = wait(&wait_status);
+	pid = waitpid(pid, &wait_status, 0);
 	if (WIFEXITED(wait_status) && WEXITSTATUS(wait_status) == ENOENT)
 	{
 		wait_status = ERROR_NOT_FOUND;

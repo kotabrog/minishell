@@ -135,6 +135,7 @@ int			ft_malloc(void *pointer, size_t type_size, size_t n);
 int			ft_free(void *pointer);
 int			expand_malloc(char **s, size_t cpy_n, size_t after_n);
 int			ft_free_double_char(char ***pointer);
+int			ft_free_triple_char(char ****pointer);
 
 int			ft_close(int *fd);
 int			multi_close(int *fd1, int *fd2, int *fd3, int *fd4);
