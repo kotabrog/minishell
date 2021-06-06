@@ -109,3 +109,6 @@ echo $a
 export a='"     "'
 echo $a
 # ' '
+export | grep b=
+echo $b
+# 
