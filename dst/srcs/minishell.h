@@ -22,6 +22,7 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <limits.h>
+# include <sys/stat.h>
 
 # include "../libft/libft.h"
 
@@ -54,6 +55,8 @@
 # define ERROR_ARGMENT -10
 # define ERROR_EXIT_NUM -11
 # define ERROR_EXIT_MANY -12
+# define ERROR_PERMISSION -13
+# define ERROR_IS_DIR -14
 
 # define SIGNAL_VALUE 128
 
@@ -149,6 +152,8 @@ void		error_process(int err_num, char *command, int exit_flag);
 int			error_put(int err_num, char *command);
 int			error_put2(int err_num, char *com1, char *com2);
 char		*error_make_massage(int n);
+int			error_file(int error, int exe_flag, char *s);
+int			file_status_check(char *file);
 
 int			ft_malloc(void *pointer, size_t type_size, size_t n);
 int			ft_free(void *pointer);

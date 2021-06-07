@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 15:11:14 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/04 18:51:46 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/07 18:39:44 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ char	*error_make_massage(int n)
 	err_str[10] = "No arguments are accepted";
 	err_str[11] = "numeric argument required";
 	err_str[12] = "too many arguments";
+	err_str[13] = "Permission denied";
+	err_str[14] = "is a directory";
 	return (err_str[n]);
 }
 
