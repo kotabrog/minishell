@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 20:55:23 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/07 19:35:04 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/07 23:00:56 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ int	process_execute(t_status *status, t_command *com, int fork_flag)
 		return (errno);
 	if (pid == 0)
 	{
-		execve(com->s[0], com->s, status->env);
-		exit(error_file(errno, TRUE, com->s[0]));
+		exit(error_file(search_execve(com->s, status->env), TRUE, com->s[0]));
+		// execve(com->s[0], com->s, status->env);
+		// exit(error_file(errno, TRUE, com->s[0]));
 	}
 	if (fork_flag)
 		g_signal->exit_pid = pid;

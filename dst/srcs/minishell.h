@@ -110,6 +110,7 @@ int			process_pipe(t_status *status, t_tree *tree, \
 int			process_command(t_status *status, t_tree *tree, int parent[2], \
 		int fork_flag);
 void		all_command_close(t_tree *tree);
+int			search_execve(char **com, char **env);
 
 void		redirect_init(int fd[3], int fork_flag);
 int			redirect_set(int fd[3], char **file, int *tofd, int fork_flag);
