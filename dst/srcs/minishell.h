@@ -110,6 +110,7 @@ int			status_value_conversion(int flag);
 int			wait_conversion(int flag);
 
 int			builtin_exit(t_status *status, t_command *com, int fork_flag);
+int			builtin_echo(t_command *com);
 
 int			command_init(t_command **command, int flag);
 int			command_free(t_command **command);
