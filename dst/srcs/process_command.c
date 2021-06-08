@@ -6,18 +6,20 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 20:55:23 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/05/30 18:29:52 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/05 14:37:59 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	process_execute(t_status *status, t_command *com)
+int	process_execute(t_status *status, t_command *com, int fork_flag)
 {
 	int	pid;
 	int	wait_status;
 
-	pid = fork();
+	pid = -1;
+	if (!g_signal->signal_flag)
+		pid = fork();
 	if (pid == -1)
 		return (errno);
 	if (pid == 0)
@@ -25,20 +27,29 @@ int	process_execute(t_status *status, t_command *com)
 		execve(com->s[0], com->s, status->env);
 		exit(errno);
 	}
+	if (fork_flag)
+		g_signal->exit_pid = pid;
 	pid = wait(&wait_status);
 	if (WIFEXITED(wait_status) && WEXITSTATUS(wait_status) == ENOENT)
 	{
 		wait_status = ERROR_NOT_FOUND;
 		error_put(wait_status, com->s[0]);
 	}
-	return (wait_status);
+	if (!fork_flag && g_signal->signal_flag)
+		ft_putchar_fd('\n', 1);
+	return (wait_conversion(wait_status));
 }
 
-static int	choice_command(t_status *status, t_command *com)
+static int	choice_command(t_status *status, t_command *com, int fork_flag)
 {
 	if (com->s[0] == NULL)
 		return (SUCCESS);
-	return (process_execute(status, com));
+	if (ft_strcmp(com->s[0], "exit") == 0)
+		return (builtin_exit(status, com, fork_flag));
+	if (ft_strcmp(com->s[0], "loop") == 0)
+		while (TRUE)
+			;
+	return (process_execute(status, com, fork_flag));
 }
 
 int	process_command(t_status *status, t_tree *tree, int parent[2], \
@@ -48,6 +59,8 @@ int	process_command(t_status *status, t_tree *tree, int parent[2], \
 	int	fd[3];
 
 	flag = SUCCESS;
+	if (fork_flag)
+		g_signal->tree = NULL;
 	redirect_init(fd, fork_flag);
 	if (parent[READ] != -1 && dup2(parent[READ], READ) == -1)
 		flag = errno;
@@ -57,8 +70,8 @@ int	process_command(t_status *status, t_tree *tree, int parent[2], \
 	if (!flag)
 		flag = redirect_set(fd, tree->command->file, \
 			tree->command->fd, fork_flag);
-	if (!flag)
-		flag = choice_command(status, tree->command);
+	if (!flag && !g_signal->signal_flag)
+		flag = choice_command(status, tree->command, fork_flag);
 	flag = redirect_close(fd, flag, fork_flag);
 	if (fork_flag)
 		exit(flag);

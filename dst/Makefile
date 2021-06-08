@@ -16,10 +16,11 @@ SRCNAME	=	command_utility1.c\
 			process_pipe.c\
 			process_command.c\
 			ft_close.c\
-			ft_signal.c\
+			signal.c\
 			redirect.c\
 			read_parse_command.c\
-			exit_status.c
+			exit_status.c\
+			exit.c
 
 SRCS	= $(addprefix $(SRCDIR), $(SRCNAME))
 OBJS	= $(SRCS:.c=.o)

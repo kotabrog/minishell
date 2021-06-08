@@ -56,7 +56,8 @@ exit 1.1
 echo $?
 # 255
 sleep 10
-^C
+ctrl+C
+# ^C
 echo $?
 # 130
 echo x | exit a
@@ -65,3 +66,28 @@ echo $?
 # 255
 exit 1 ; echo x
 # exit
+sleep 5
+ctrl+\
+# ^\Quit: 3
+sleep 5 | echo x
+# x
+ctrl+C
+# ^C
+sleep 5 | echo x
+# x
+ctrl+\
+# ^\bash-3.2$
+sleep 5 > file
+ctrl+\
+# ^\Quit: 3
+cat file
+sleep 5; sleep 5
+ctrl+\
+# ^\Quit: 3
+ctrl+\
+# ^\Quit: 3
+sleep 5; sleep 5
+ctrl+C
+# ^C
+ctrl+C
+# ^C
