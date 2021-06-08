@@ -112,3 +112,19 @@ echo $a
 export | grep b=
 echo $b
 # 
+./ls.c
+# bash: ./ls.c: Permission denied
+echo $?
+# 126
+./temp
+# bash: ./temp: is a directory
+echo $?
+# 126
+echo x > not_access 
+# bash: not_access: Permission denied
+echo $?
+# 1
+echo x > ./temp
+# bash: ./temp: Is a directory
+bash-3.2$ echo $?
+# 1

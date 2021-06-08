@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/29 16:39:09 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/05/30 18:23:54 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/07 19:51:32 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,19 @@ static int	set_file(char *file, int tofd)
 	int	flag;
 
 	flag = SUCCESS;
-	if (tofd == 0)
+	fd = -1;
+	if (file_status_check(file) == ERROR_IS_DIR)
+		flag = ERROR_IS_DIR;
+	else if (tofd == 0)
 		fd = open(file, O_RDONLY);
 	else if (tofd == 1)
 		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	else
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0666);
+	if (!flag && fd == -1)
+		flag = errno;
 	if (fd == -1)
-		return (errno);
+		return (error_file(flag, FALSE, file));
 	if (dup2(fd, !!tofd) == -1)
 		flag = errno;
 	close(fd);
@@ -75,7 +80,6 @@ int	redirect_set(int fd[3], char **file, int *tofd, int fork_flag)
 	while (flag == SUCCESS && *file)
 	{
 		flag = set_file(*file, *tofd);
-		error_if(flag, flag, *file, FALSE);
 		tofd++;
 		file++;
 	}
