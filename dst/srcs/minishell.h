@@ -22,6 +22,7 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <limits.h>
+# include <sys/stat.h>
 
 # include "../libft/libft.h"
 
@@ -39,6 +40,10 @@
 # define SEMICOLON 1
 # define PIPE 2
 
+# define SINGLE_QUOT 1
+# define DOUBLE_QUOT 2
+# define QUOT_FLAG 1
+
 # define ERROR_NOT_FOUND -2
 # define ERROR_AMB_REDIRECT -3
 # define ERROR_TOKEN_LEFT -4
@@ -50,6 +55,8 @@
 # define ERROR_ARGMENT -10
 # define ERROR_EXIT_NUM -11
 # define ERROR_EXIT_MANY -12
+# define ERROR_PERMISSION -13
+# define ERROR_IS_DIR -14
 
 # define SIGNAL_VALUE 128
 
@@ -73,13 +80,20 @@ typedef struct s_status {
 	char		**env;
 	char		*memo;
 	int			exit;
-}					t_status;
+}				t_status;
 
 typedef struct s_global {
 	int		signal_flag;
 	t_tree	*tree;
 	int		exit_pid;
-}					t_global;
+}				t_global;
+
+typedef struct s_ex_flag {
+	int	start;
+	int	end;
+	int	quote;
+	int	var;
+}				t_ex_flag;
 
 extern t_global		*g_signal;
 
@@ -96,6 +110,7 @@ int			process_pipe(t_status *status, t_tree *tree, \
 int			process_command(t_status *status, t_tree *tree, int parent[2], \
 		int fork_flag);
 void		all_command_close(t_tree *tree);
+int			search_execve(char **com, char **env);
 
 void		redirect_init(int fd[3], int fork_flag);
 int			redirect_set(int fd[3], char **file, int *tofd, int fork_flag);
@@ -108,6 +123,14 @@ void		signal_reset(void);
 int			set_exit_status(t_status *status, int flag);
 int			status_value_conversion(int flag);
 int			wait_conversion(int flag);
+
+int			variable_expansion_all(t_status *status, t_command *com);
+int			variable_expansion(char ***target, int file_flag, \
+	t_status *status);
+int			expansion_sentence(char *str, char **dst, t_status *status);
+int			expansion_split(char *s, char ***dst);
+int			search_variable(char **buf, char *str, t_ex_flag *fl, \
+	t_status *status);
 
 int			builtin_exit(t_status *status, t_command *com, int fork_flag);
 int			builtin_echo(t_command *com);
@@ -130,11 +153,14 @@ void		error_process(int err_num, char *command, int exit_flag);
 int			error_put(int err_num, char *command);
 int			error_put2(int err_num, char *com1, char *com2);
 char		*error_make_massage(int n);
+int			error_file(int error, int exe_flag, char *s);
+int			file_status_check(char *file);
 
 int			ft_malloc(void *pointer, size_t type_size, size_t n);
 int			ft_free(void *pointer);
 int			expand_malloc(char **s, size_t cpy_n, size_t after_n);
 int			ft_free_double_char(char ***pointer);
+int			ft_free_triple_char(char ****pointer);
 
 int			ft_close(int *fd);
 int			multi_close(int *fd1, int *fd2, int *fd3, int *fd4);

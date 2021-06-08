@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 20:55:23 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/05 15:48:24 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/07 23:00:56 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,13 @@ int	process_execute(t_status *status, t_command *com, int fork_flag)
 		return (errno);
 	if (pid == 0)
 	{
-		execve(com->s[0], com->s, status->env);
-		exit(errno);
+		exit(error_file(search_execve(com->s, status->env), TRUE, com->s[0]));
+		// execve(com->s[0], com->s, status->env);
+		// exit(error_file(errno, TRUE, com->s[0]));
 	}
 	if (fork_flag)
 		g_signal->exit_pid = pid;
-	pid = wait(&wait_status);
-	if (WIFEXITED(wait_status) && WEXITSTATUS(wait_status) == ENOENT)
-	{
-		wait_status = ERROR_NOT_FOUND;
-		error_put(wait_status, com->s[0]);
-	}
+	pid = waitpid(pid, &wait_status, 0);
 	if (!fork_flag && g_signal->signal_flag)
 		ft_putchar_fd('\n', 1);
 	return (wait_conversion(wait_status));
@@ -63,8 +59,9 @@ int	process_command(t_status *status, t_tree *tree, int parent[2], \
 	flag = SUCCESS;
 	if (fork_flag)
 		g_signal->tree = NULL;
+	flag = variable_expansion_all(status, tree->command);
 	redirect_init(fd, fork_flag);
-	if (parent[READ] != -1 && dup2(parent[READ], READ) == -1)
+	if (!flag && parent[READ] != -1 && dup2(parent[READ], READ) == -1)
 		flag = errno;
 	if (!flag && parent[WRITE] != -1 && dup2(parent[WRITE], WRITE) == -1)
 		flag = errno;

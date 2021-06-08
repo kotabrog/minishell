@@ -40,6 +40,19 @@ int	ft_free_double_char(char ***pointer)
 	return (SUCCESS);
 }
 
+int	ft_free_triple_char(char ****pointer)
+{
+	char	***temp;
+
+	if (pointer == NULL)
+		return (SUCCESS);
+	temp = *pointer;
+	while (*temp)
+		ft_free_double_char(temp++);
+	ft_free(pointer);
+	return (SUCCESS);
+}
+
 int	expand_malloc(char **s, size_t cpy_n, size_t after_n)
 {
 	char	*temp;

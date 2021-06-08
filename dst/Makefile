@@ -22,6 +22,12 @@ SRCNAME	=	command_utility1.c\
 			exit_status.c\
 			exit.c\
 			echo.c\
+			expansion_sentence.c\
+			expansion_split.c\
+			expansion_variable.c\
+			search_variable.c\
+			error_file.c\
+			search_execve.c
 
 SRCS	= $(addprefix $(SRCDIR), $(SRCNAME))
 OBJS	= $(SRCS:.c=.o)

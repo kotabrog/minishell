@@ -29,6 +29,8 @@ int	ft_strlen_ex(char **s)
 	int	n;
 
 	n = 0;
+	if (s == NULL)
+		return (-1);
 	while (s[n])
 		++n;
 	return (n);

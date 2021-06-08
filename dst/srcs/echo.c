@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 15:34:26 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/05 15:48:19 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/06 23:03:13 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	builtin_echo(t_command *com)
 
 	texts = &(com->s[1]);
 	flag = FALSE;
-	if (ft_strcmp(*texts, "-n") == 0)
+	if (*texts && ft_strcmp(*texts, "-n") == 0)
 	{
 		++texts;
 		flag = TRUE;
