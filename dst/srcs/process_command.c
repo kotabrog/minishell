@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 20:55:23 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/05 15:48:24 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/06 21:54:17 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	process_execute(t_status *status, t_command *com, int fork_flag)
 	}
 	if (fork_flag)
 		g_signal->exit_pid = pid;
-	pid = wait(&wait_status);
+	pid = waitpid(pid, &wait_status, 0);
 	if (WIFEXITED(wait_status) && WEXITSTATUS(wait_status) == ENOENT)
 	{
 		wait_status = ERROR_NOT_FOUND;
@@ -63,8 +63,9 @@ int	process_command(t_status *status, t_tree *tree, int parent[2], \
 	flag = SUCCESS;
 	if (fork_flag)
 		g_signal->tree = NULL;
+	flag = variable_expansion_all(status, tree->command);
 	redirect_init(fd, fork_flag);
-	if (parent[READ] != -1 && dup2(parent[READ], READ) == -1)
+	if (!flag && parent[READ] != -1 && dup2(parent[READ], READ) == -1)
 		flag = errno;
 	if (!flag && parent[WRITE] != -1 && dup2(parent[WRITE], WRITE) == -1)
 		flag = errno;

@@ -39,6 +39,10 @@
 # define SEMICOLON 1
 # define PIPE 2
 
+# define SINGLE_QUOT 1
+# define DOUBLE_QUOT 2
+# define QUOT_FLAG 1
+
 # define ERROR_NOT_FOUND -2
 # define ERROR_AMB_REDIRECT -3
 # define ERROR_TOKEN_LEFT -4
@@ -73,13 +77,20 @@ typedef struct s_status {
 	char		**env;
 	char		*memo;
 	int			exit;
-}					t_status;
+}				t_status;
 
 typedef struct s_global {
 	int		signal_flag;
 	t_tree	*tree;
 	int		exit_pid;
-}					t_global;
+}				t_global;
+
+typedef struct s_ex_flag {
+	int	start;
+	int	end;
+	int	quote;
+	int	var;
+}				t_ex_flag;
 
 extern t_global		*g_signal;
 
@@ -109,6 +120,14 @@ int			set_exit_status(t_status *status, int flag);
 int			status_value_conversion(int flag);
 int			wait_conversion(int flag);
 
+int			variable_expansion_all(t_status *status, t_command *com);
+int			variable_expansion(char ***target, int file_flag, \
+	t_status *status);
+int			expansion_sentence(char *str, char **dst, t_status *status);
+int			expansion_split(char *s, char ***dst);
+int			search_variable(char **buf, char *str, t_ex_flag *fl, \
+	t_status *status);
+
 int			builtin_exit(t_status *status, t_command *com, int fork_flag);
 int			builtin_echo(t_command *com);
 
@@ -135,6 +154,7 @@ int			ft_malloc(void *pointer, size_t type_size, size_t n);
 int			ft_free(void *pointer);
 int			expand_malloc(char **s, size_t cpy_n, size_t after_n);
 int			ft_free_double_char(char ***pointer);
+int			ft_free_triple_char(char ****pointer);
 
 int			ft_close(int *fd);
 int			multi_close(int *fd1, int *fd2, int *fd3, int *fd4);

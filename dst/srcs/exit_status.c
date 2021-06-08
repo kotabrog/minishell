@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/30 16:41:22 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/05 14:13:43 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/05 17:59:58 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	wait_conversion(int flag)
 	return (EXIT_FAILURE);
 }
 
-static int	calc_signal_and_mod(long long int num)
+static int	calc_mod(long long int num)
 {
 	if (num >= 0)
 		return (num % 256);
@@ -41,7 +41,7 @@ int	status_value_conversion(int flag)
 		return (127);
 	if (-8 <= flag && flag <= -4)
 		return (258);
-	flag = calc_signal_and_mod(flag);
+	flag = calc_mod(flag);
 	return (flag);
 }
 

@@ -91,3 +91,24 @@ ctrl+C
 # ^C
 ctrl+C
 # ^C
+export c="a    a"
+echo $c
+# a a
+echo "a"$c"b"
+# aa ab
+export a="a"$c'b'
+echo $a
+# aa ab
+export | grep a=
+# declare -x a="aa    ab"
+export | grep c=
+# declare -x c="a    a"
+export a="'     '"
+echo $a
+# ' '
+export a='"     "'
+echo $a
+# ' '
+export | grep b=
+echo $b
+# 
