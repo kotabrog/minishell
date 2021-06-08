@@ -67,7 +67,7 @@ static int	ft_put_line(char **line, char **memo, char *buf)
 	return (flag);
 }
 
-static int	get_next_line(char **line, char **memo)
+static int	get_next_line(char **line, char **memo, t_status *status)
 {
 	int		flag;
 	char	*buf;
@@ -79,7 +79,9 @@ static int	get_next_line(char **line, char **memo)
 	while (flag == 0)
 	{
 		n = read(0, buf, BUFF_SIZE);
-		if (n <= 0)
+		if (n == 0 && !(*line)[0] && !*memo)
+			builtin_exit(status, NULL, 0);
+		if (n < 0)
 			break ;
 		buf[n] = 0;
 		flag = ft_put_line(line, memo, buf);
@@ -93,7 +95,7 @@ static int	get_next_line(char **line, char **memo)
 	return (flag);
 }
 
-int	read_input(char **s, char **memo)
+int	read_input(char **s, char **memo, t_status *status)
 {
 	int			flag;
 
@@ -115,7 +117,7 @@ int	read_input(char **s, char **memo)
 	else if (flag == 0)
 	{
 		write(1, "minishell$ ", 11);
-		flag = get_next_line(s, memo);
+		flag = get_next_line(s, memo, status);
 	}
 	return (flag);
 }

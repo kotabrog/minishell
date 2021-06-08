@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+t_global	*g_signal = NULL;
+
 void	loop_shell(t_status *status)
 {
 	char	*s;
@@ -20,6 +22,7 @@ void	loop_shell(t_status *status)
 	while (TRUE)
 	{
 		flag = 0;
+		set_signal(0);
 		if (read_parse_command(status, &s, &(status->memo), &(status->tree)))
 			continue ;
 		flag = process_tree(status, status->tree);
@@ -39,6 +42,9 @@ int	main(int argc, char **argv, char **envp)
 	error_if(argc != 1 || !**argv, ERROR_ARGMENT, NULL, TRUE);
 	flag = status_init(&status, envp);
 	error_if(flag, flag, NULL, TRUE);
+	g_signal = signal_init();
+	error_if(!g_signal, ERROR, NULL, TRUE);
 	loop_shell(status);
 	status_finish(status);
+	free(g_signal);
 }

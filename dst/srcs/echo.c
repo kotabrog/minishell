@@ -1,22 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_signal.c                                        :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/29 12:50:35 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/05/29 14:30:24 by ksuzuki          ###   ########.fr       */
+/*   Created: 2021/06/05 15:34:26 by ksuzuki           #+#    #+#             */
+/*   Updated: 2021/06/05 15:48:19 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	get_wait_status(int status)
+int	builtin_echo(t_command *com)
 {
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	if (WIFSIGNALED(status))
-		return (WTERMSIG(status));
-	return (ERROR);
+	int		flag;
+	char	**texts;
+
+	texts = &(com->s[1]);
+	flag = FALSE;
+	if (ft_strcmp(*texts, "-n") == 0)
+	{
+		++texts;
+		flag = TRUE;
+	}
+	while (*texts)
+	{
+		ft_putstr_fd(*(texts++), 1);
+		if (*texts)
+			ft_putchar_fd(' ', 1);
+	}
+	if (!flag)
+		ft_putchar_fd('\n', 1);
+	return (SUCCESS);
 }

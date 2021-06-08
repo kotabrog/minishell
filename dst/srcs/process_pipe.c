@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 20:53:33 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/05/30 17:55:10 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/05 14:36:36 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static int	process_fork(t_tree *tree, int pid[2])
 		if (pid[1] == -1)
 			return (errno);
 	}
-
 	return (SUCCESS);
 }
 
@@ -64,7 +63,9 @@ static int	pid_search_close(t_tree *tree, int pid)
 {
 	if (tree->command->pid[1] == pid)
 	{
-		multi_close(&tree->command->pipefd[0], &tree->command->pipefd[1], NULL, NULL);
+		tree->command->pid[1] = -1;
+		multi_close(&tree->command->pipefd[0], &tree->command->pipefd[1], \
+			NULL, NULL);
 		return (TRUE);
 	}
 	while (tree->left->command->flag == PIPE && \
@@ -73,9 +74,39 @@ static int	pid_search_close(t_tree *tree, int pid)
 	multi_close(&tree->command->pipefd[0], \
 		&tree->command->pipefd[1], NULL, NULL);
 	if (tree->left->command->flag == PIPE)
+	{
 		multi_close(&tree->left->command->pipefd[0], \
 			&tree->left->command->pipefd[1], NULL, NULL);
+		tree->left->command->pid[1] = -1;
+	}
+	else
+		tree->left->command->pid[0] = -1;
 	return (FALSE);
+}
+
+void	all_command_close(t_tree *tree)
+{
+	if (tree == NULL || tree->command == NULL)
+		return ;
+	if (tree->command->flag == 0)
+	{
+		if (tree->command->pid[0] > 0)
+			kill(tree->command->pid[0], SIGTERM);
+		return ;
+	}
+	while (tree->left->command->flag == PIPE)
+	{
+		multi_close(&tree->command->pipefd[0], \
+			&tree->command->pipefd[1], NULL, NULL);
+		if (tree->command->pid[1] > 0)
+			kill(tree->command->pid[1], SIGTERM);
+		if (tree->left->command->flag == PIPE)
+			tree = tree->left;
+		else
+			break ;
+	}
+	if (tree->command->pid[0] != -1)
+		kill(tree->command->pid[0], SIGTERM);
 }
 
 int	process_pipe(t_status *status, t_tree *tree, int parentfd[2])
@@ -84,14 +115,21 @@ int	process_pipe(t_status *status, t_tree *tree, int parentfd[2])
 	int		wait_status;
 	int		pid;
 
+	g_signal->tree = tree;
 	flag = pipe_recursive(status, tree, parentfd);
-	while (TRUE)
+	while (!g_signal->signal_flag)
 	{
 		pid = wait(&wait_status);
 		if (pid == -1)
 			break ;
 		if (pid_search_close(tree, pid) && !flag)
-			flag = wait_status;
+			flag = wait_conversion(wait_status);
+	}
+	if (g_signal->signal_flag)
+	{
+		ft_putchar_fd('\n', 1);
+		if (tree->command->flag == PIPE)
+			flag = g_signal->signal_flag + SIGNAL_VALUE;
 	}
 	return (flag);
 }
