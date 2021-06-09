@@ -14,8 +14,13 @@
 
 static void	input_handler(int signum)
 {
-	ft_putstr_fd("\b\b  \b\b\nminishell$ ", 1);
-	g_signal->signal_flag = signum;
+	if (signum == SIGINT)
+	{
+		ft_putstr_fd("\b\b  \b\b\nminishell$ ", 1);
+		g_signal->signal_flag = signum;
+	}
+	if (signum == SIGQUIT)
+		ft_putstr_fd("\b\b  \b\b", 1);
 }
 
 static void	execution_handler(int signam)
@@ -56,7 +61,7 @@ int	set_signal(int mode)
 		signal_reset();
 		if (signal(SIGINT, input_handler) == SIG_ERR)
 			return (errno);
-		if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+		if (signal(SIGQUIT, input_handler) == SIG_ERR)
 			return (errno);
 	}
 	else if (mode == 1)
