@@ -126,5 +126,5 @@ echo $?
 # 1
 echo x > ./temp
 # bash: ./temp: Is a directory
-bash-3.2$ echo $?
+echo $?
 # 1
