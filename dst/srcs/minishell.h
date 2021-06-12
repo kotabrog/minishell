@@ -25,6 +25,7 @@
 # include <sys/stat.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/ioctl.h>
 
 # include "../libft/libft.h"
 
@@ -119,6 +120,7 @@ int			redirect_close(int fd[3], int flag, int fork_flag);
 int			set_signal(int mode);
 t_global	*signal_init(void);
 void		signal_reset(void);
+void		delete_signal(void);
 
 int			set_exit_status(t_status *status, int flag);
 int			status_value_conversion(int flag);

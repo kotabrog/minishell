@@ -27,7 +27,8 @@ SRCNAME	=	command_utility1.c\
 			expansion_variable.c\
 			search_variable.c\
 			error_file.c\
-			search_execve.c
+			search_execve.c\
+			signal_delete.c
 
 SRCS	= $(addprefix $(SRCDIR), $(SRCNAME))
 OBJS	= $(SRCS:.c=.o)
