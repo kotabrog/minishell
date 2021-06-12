@@ -14,16 +14,19 @@
 
 static void	input_handler(int signum)
 {
+	// ft_putstr_fd("\033[2D\033[0K\n", 2);
 	if (signum == SIGINT)
 	{
-		ft_putstr_fd("\b\b  \b\b\n", 1);
+		// ft_putstr_fd("\b\b  \b\b\n", 1);
+		printf("\033[0E\033[%dC\033[0K\n", 11 + rl_end);
+		// printf("%d\n", rl_end);
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		g_signal->signal_flag = signum;
+		g_signal->signal_flag = -signum;
 	}
-	if (signum == SIGQUIT)
-		ft_putstr_fd("\b\b  \b\b", 1);
+	// if (signum == SIGQUIT)
+	// 	ft_putstr_fd("\b\b  \b\b", 1);
 }
 
 static void	execution_handler(int signam)
