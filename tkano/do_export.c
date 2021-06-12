@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 21:36:56 by tkano             #+#    #+#             */
-/*   Updated: 2021/05/27 21:59:37 by tkano            ###   ########.fr       */
+/*   Updated: 2021/05/30 21:26:42 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*get_env_key(char *dest, const char *src)
 	int	i;
 
 	i = 0;
-	while (src[i] && src[i] != '=' && ft_strlen(src) < ft_strlen(src) < BUFF_SIZE)
+	while (src[i] && src[i] != '=' && ft_strlen(src) < BUFF_SIZE)
 	{
 		dest[i] = src[i];
 		i++;
@@ -93,11 +93,10 @@ int	do_export(char **command, t_env *env)
 	}
 	else
 	{
-		args_check = check_ex_arg(args[1]);
+		args_check = check_ex_arg(command[1]);
 		if (args_check)
-			is_env(env, arg[1]);
-		else
-			env_add(args[1], env);
+			is_env(env, command[1]);
+		env_add(command[1], env);
 	}
 	return (SUCCESS);
 }
