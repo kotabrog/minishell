@@ -27,6 +27,8 @@ int	read_input(char **s, t_status *status)
 			add_history(*s);
 			flag = TRUE;
 		}
+		else
+			free(*s);
 	}
 	error_if(errno, errno, NULL, TRUE);
 	return (flag);
