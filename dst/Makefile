@@ -44,11 +44,11 @@ all		:	$(NAME)
 
 $(NAME)	:	$(OBJS)
 			$(MAKE) -C ./libft
-			$(CC) $(CFLAGS) $(OBJS) -L./libft/ -lft -o $(NAME)
+			$(CC) $(CFLAGS) $(OBJS) -L./libft/ -lft -lreadline -o $(NAME)
 
 sani	:	$(OBJS)
 		$(MAKE) -C ./libft
-		$(CC) $(CFLAGS) -fsanitize=address $(OBJS) -L./libft/ -lft -o $(NAME)
+		$(CC) $(CFLAGS) -fsanitize=address $(OBJS) -L./libft/ -lft -lreadline -o $(NAME)
 
 clean	:
 			$(MAKE) clean -C ./libft
