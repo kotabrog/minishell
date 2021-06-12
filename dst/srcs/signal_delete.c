@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/12 19:21:44 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/12 22:48:33 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/12 23:04:55 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static void	get_cursol_point(int *col, int *row, int *flag)
 
 	*row = (11 + rl_end) / *col;
 	return_col = (11 + rl_end) % *col;
+	if (return_col == 0)
+		*flag = 2;
 	if (return_col + 1 == *col)
 		*flag = 1;
 	else
@@ -43,7 +45,7 @@ static int	join_and_free(char **dst, char *s1, char *s2, char *free_s)
 	return (SUCCESS);
 }
 
-static int	make_delete_sentence(int col, int row, char *s)
+static int	make_delete_sentence(int col, int row, char *s, char *flag)
 {
 	char	*num;
 	char	*temp;
@@ -65,7 +67,7 @@ static int	make_delete_sentence(int col, int row, char *s)
 	if (join_and_free(&temp, s, num, num))
 		return (ERROR);
 	free(s);
-	if (join_and_free(&s, temp, "C\033[0K", temp))
+	if (join_and_free(&s, temp, flag, temp))
 		return (ERROR);
 	ft_putstr_fd(s, 1);
 	free(s);
@@ -84,13 +86,15 @@ void	delete_signal(void)
 	if (col == -1)
 		return ;
 	get_cursol_point(&col, &row, &flag);
+	if (flag == 2)
+		make_delete_sentence(0, row, s, "C\033[2K");
 	if (flag == 1)
 	{
-		make_delete_sentence(0, row + 1, s);
-		make_delete_sentence(col, row, s);
+		make_delete_sentence(col, row, s, "C\033[0K");
+		make_delete_sentence(0, 1, s, "C\033[2K");
 	}
 	else
-		make_delete_sentence(col, row, s);
+		make_delete_sentence(col, row, s, "C\033[0K");
 	// ft_putstr_fd("\033[", 1);
 	// ft_putnbr_fd(row, 1);
 	// ft_putstr_fd("E\033[", 1);
