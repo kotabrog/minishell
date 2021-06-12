@@ -31,7 +31,8 @@ SRCNAME	=	command_utility1.c\
 
 SRCS	= $(addprefix $(SRCDIR), $(SRCNAME))
 OBJS	= $(SRCS:.c=.o)
-INCLUDE	= -I./libft
+INCLUDE	= -I./libft -I$(shell brew --prefix readline)/include
+LDFLAGS = -L./libft/ -lft -L$(shell brew --prefix readline)/lib -lreadline -lhistory
 NAME	= minishell
 CC		= gcc
 CFLAGS	= -Wall -Wextra -Werror
@@ -44,11 +45,11 @@ all		:	$(NAME)
 
 $(NAME)	:	$(OBJS)
 			$(MAKE) -C ./libft
-			$(CC) $(CFLAGS) $(OBJS) -L./libft/ -lft -lreadline -o $(NAME)
+			$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
 
 sani	:	$(OBJS)
 		$(MAKE) -C ./libft
-		$(CC) $(CFLAGS) -fsanitize=address $(OBJS) -L./libft/ -lft -lreadline -o $(NAME)
+		$(CC) $(CFLAGS) -fsanitize=address $(OBJS) $(LDFLAGS) -o $(NAME)
 
 clean	:
 			$(MAKE) clean -C ./libft
