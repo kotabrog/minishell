@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/13 18:30:52 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/14 00:51:53 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/14 01:09:40 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static int	join_documenet(char **dst, char *s)
 {
 	char	*temp;
+
 	temp = ft_strjoin(*dst, s);
 	ft_free(dst);
 	if (temp == NULL)

@@ -6,7 +6,7 @@
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/13 23:05:16 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/13 23:34:59 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/14 01:09:27 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	heardoc_set(char **file, int *fd, char *quot)
 int	heardoc_before_expansion(char **file, int *fd)
 {
 	int	i;
-	int	flag = 0;
+	int	flag;
 
 	i = 0;
 	flag = 0;
@@ -83,7 +83,7 @@ static int	heardoc_reset(char **file)
 int	heardoc_after_expansion(char **file, int *fd)
 {
 	int	i;
-	int	flag = 0;
+	int	flag;
 
 	i = 0;
 	flag = 0;
