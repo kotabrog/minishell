@@ -27,8 +27,7 @@ SRCNAME	=	command_utility1.c\
 			expansion_variable.c\
 			search_variable.c\
 			error_file.c\
-			search_execve.c\
-			signal_delete.c
+			search_execve.c
 
 SRCS	= $(addprefix $(SRCDIR), $(SRCNAME))
 OBJS	= $(SRCS:.c=.o)
@@ -46,6 +45,7 @@ all		:	$(NAME)
 
 $(NAME)	:	$(OBJS)
 			$(MAKE) -C ./libft
+			echo > ~/.inputrc set echo-control-characters off
 			$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
 
 sani	:	$(OBJS)
