@@ -36,6 +36,8 @@
 # define READ 0
 # define WRITE 1
 # define STDERR 2
+# define HEARDOC 1147483647
+# define HEARDOC_NON_EX 1147483648
 
 # define BUFF_SIZE 1024
 # define MAX_FD 256
@@ -46,6 +48,8 @@
 # define SINGLE_QUOT 1
 # define DOUBLE_QUOT 2
 # define QUOT_FLAG 1
+# define QUOT_DUMMY_DOUBLE 2
+# define QUOT_DUMMY_SINGLE 3
 
 # define ERROR_NOT_FOUND -2
 # define ERROR_AMB_REDIRECT -3
@@ -117,6 +121,12 @@ void		redirect_init(int fd[3], int fork_flag);
 int			redirect_set(int fd[3], char **file, int *tofd, int fork_flag);
 int			redirect_close(int fd[3], int flag, int fork_flag);
 
+int			hear_document(t_status *status, t_tree *tree, int flag);
+int			heardoc_before_expansion(char **file, int *fd);
+int			heardoc_after_expansion(char **file, int *fd);
+int			heardoc_redirect(char *file);
+void		heardoc_handler(int signum);
+
 int			set_signal(int mode);
 t_global	*signal_init(void);
 void		signal_reset(void);
@@ -126,8 +136,6 @@ int			status_value_conversion(int flag);
 int			wait_conversion(int flag);
 
 int			variable_expansion_all(t_status *status, t_command *com);
-int			variable_expansion(char ***target, int file_flag, \
-	t_status *status);
 int			expansion_sentence(char *str, char **dst, t_status *status);
 int			expansion_split(char *s, char ***dst);
 int			search_variable(char **buf, char *str, t_ex_flag *fl, \
