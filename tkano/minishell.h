@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/20 11:53:33 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/05/24 15:45:24 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/12 13:59:22 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define SUCCESS 0
 # define ERROR 1
 # define READ_SIZE 1024
+# define BUFF_SIZE 1024
 # define DICT_ALLOCATE_SIZE 16
 # define COMMAND_ALLOCATE_SIZE 16
 # define SEMICOLON 0b1
@@ -37,6 +38,7 @@
 # define RRIGHT 0b100000
 # define PIPE 0b1000000
 # define DOLLAR 0b10000000
+# define PATH_MAX 4096
 
 
 typedef struct	s_item {
@@ -81,7 +83,7 @@ void			process_error(int err_num, char *command, int exit_flag);
 void			if_error(int flag, int err_num, char *command, int exit_flag);
 
 
-int		parse_command(char *buf, t_command *command);
+int				parse_command(char *buf, t_command *command);
 
 int				read_parse_command(t_status *status, int fd);
 
@@ -97,9 +99,14 @@ int				init_env(t_status *status);
 void			init_status(t_status **status);
 void			free_status(t_status *status);
 
+int				is_env(t_env *env, char *args);
+int				env_add(const char *value, t_env *env);
 int				env_init(t_status *status, char **arg_env);
 int				do_env(t_env *env);
 int				do_export(char **command, t_env *env);
 void			put_sorted_env(t_env *env);
+int				do_unset(char **command, t_env *env);
+int				ft_free(void *pointer);
+int				do_pwd(void);
 
 #endif

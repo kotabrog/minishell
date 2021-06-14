@@ -16,10 +16,10 @@ int	main(int argc, char **argv, char **env)
 
 	env_init(status, env);
 	do_env(status->env);
-	write(1, "========changed=======\n", 20);
-	do_unset(status->command->command, status->env);
+	write(1, "========changed=======", 20);
+	do_export(status->command->command, status->env);
 	do_env(status->env);
-	do_pwd();
 
 	return (0);
+
 }
