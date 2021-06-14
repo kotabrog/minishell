@@ -1,36 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   status_utility.c                                   :+:      :+:    :+:   */
+/*   env_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/25 21:54:18 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/14 20:58:15 by tkano            ###   ########.fr       */
+/*   Created: 2021/05/23 18:44:13 by tkano             #+#    #+#             */
+/*   Updated: 2021/06/14 20:49:35 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	status_init(t_status **status, char **envp)
+int		env_init(t_status *status, char **arg_env)
 {
-	if (ft_malloc(status, sizeof(t_status), 1))
-		return (errno);
-	(*status)->tree = NULL;
-	(*status)->env = envp;
-	env_init((*status), envp);
-	(*status)->exit = 0;
-	return (SUCCESS);
-}
+	t_env	*env;
+	t_env	*new;
+	int		i;
 
-int	status_turn_finish(t_status *status)
-{
-	tree_free(&(status->tree));
-	return (SUCCESS);
-}
-
-int	status_finish(t_status *status)
-{
-	free(status);
+	env = malloc(sizeof(t_env));
+	if (!env)
+		return (ERROR);
+	env->value = ft_strdup(arg_env[0]);
+	env->next = NULL;
+	status->env_tab = env;
+	i = 1;
+	while (arg_env && arg_env[0] && arg_env[i])
+	{
+		new = malloc(sizeof(t_env));
+		if (!new)
+			return (ERROR);
+		new->value = ft_strdup(arg_env[i]);
+		new->next = NULL;
+		env->next = new;
+		env = new;
+		i++;
+	}
 	return (SUCCESS);
 }

@@ -28,6 +28,8 @@ SRCNAME	=	command_utility1.c\
 			search_variable.c\
 			error_file.c\
 			search_execve.c\
+			env_init.c\
+			env.c\
 			hear_document.c\
 			hear_doc_ex.c\
 			heardoc_redirect.c
