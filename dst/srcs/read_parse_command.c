@@ -38,7 +38,7 @@ int	read_parse_command(t_status *status, t_tree **tree)
 		return (set_put_free_return(status, ERROR, NULL, NULL));
 	if (g_signal->signal_flag)
 		set_exit_status(status, EXIT_FAILURE);
-	set_signal(1);
+	set_signal(2);
 	flag = read_command_split(&split_command, command);
 	if (flag)
 		return (set_put_free_return(status, flag, &command, NULL));

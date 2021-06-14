@@ -20,6 +20,8 @@ static int	is_redirect(char *s)
 		return (WRITE);
 	if (ft_strcmp(s, ">>") == 0)
 		return (-WRITE);
+	if (ft_strcmp(s, "<<") == 0)
+		return (HEARDOC);
 	return (MAX_FD);
 }
 
@@ -38,6 +40,8 @@ static int	command_count(char *s, int *file_num, int *file_flag)
 		*file_flag = 1;
 	else if (s[0] == '>')
 		return (ERROR_TOKEN_RIGHT);
+	else if (s[0] == '<')
+		return (ERROR_TOKEN_LEFT);
 	else if (*file_flag)
 	{
 		++*file_num;

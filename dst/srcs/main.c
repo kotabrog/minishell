@@ -16,12 +16,17 @@ t_global	*g_signal = NULL;
 
 void	loop_shell(t_status *status)
 {
+	int	flag;
+
 	while (TRUE)
 	{
 		set_signal(0);
 		if (read_parse_command(status, &(status->tree)))
 			continue ;
-		process_tree(status, status->tree);
+		flag = hear_document(status, status->tree, 0);
+		set_signal(1);
+		if (!flag)
+			process_tree(status, status->tree);
 		status_turn_finish(status);
 	}
 }
