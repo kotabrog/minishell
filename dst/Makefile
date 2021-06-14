@@ -29,11 +29,15 @@ SRCNAME	=	command_utility1.c\
 			error_file.c\
 			search_execve.c\
 			env_init.c\
-			env.c
+			env.c\
+			hear_document.c\
+			hear_doc_ex.c\
+			heardoc_redirect.c
 
 SRCS	= $(addprefix $(SRCDIR), $(SRCNAME))
 OBJS	= $(SRCS:.c=.o)
-INCLUDE	= -I./libft
+INCLUDE	= -I./libft -I$(shell brew --prefix readline)/include
+LDFLAGS = -L./libft/ -lft -L$(shell brew --prefix readline)/lib -lreadline -lhistory
 NAME	= minishell
 CC		= gcc
 CFLAGS	= -Wall -Wextra -Werror
@@ -46,11 +50,12 @@ all		:	$(NAME)
 
 $(NAME)	:	$(OBJS)
 			$(MAKE) -C ./libft
-			$(CC) $(CFLAGS) $(OBJS) -L./libft/ -lft -o $(NAME)
+			echo > ~/.inputrc set echo-control-characters off
+			$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
 
 sani	:	$(OBJS)
 		$(MAKE) -C ./libft
-		$(CC) $(CFLAGS) -fsanitize=address $(OBJS) -L./libft/ -lft -o $(NAME)
+		$(CC) $(CFLAGS) -fsanitize=address $(OBJS) $(LDFLAGS) -o $(NAME)
 
 clean	:
 			$(MAKE) clean -C ./libft

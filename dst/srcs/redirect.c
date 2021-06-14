@@ -58,7 +58,7 @@ static int	set_file(char *file, int tofd)
 		fd = open(file, O_RDONLY);
 	else if (tofd == 1)
 		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	else
+	else if (tofd == -1)
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0666);
 	if (!flag && fd == -1)
 		flag = errno;
@@ -79,7 +79,10 @@ int	redirect_set(int fd[3], char **file, int *tofd, int fork_flag)
 		flag = redirect_copy(fd);
 	while (flag == SUCCESS && *file)
 	{
-		flag = set_file(*file, *tofd);
+		if (*tofd == HEARDOC)
+			flag = heardoc_redirect(*file);
+		else
+			flag = set_file(*file, *tofd);
 		tofd++;
 		file++;
 	}

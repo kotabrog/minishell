@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 23:33:23 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/14 20:52:36 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/14 21:36:43 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@
 # include <signal.h>
 # include <limits.h>
 # include <sys/stat.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <sys/ioctl.h>
 
 # include "../libft/libft.h"
 
@@ -33,6 +36,8 @@
 # define READ 0
 # define WRITE 1
 # define STDERR 2
+# define HEARDOC 1147483647
+# define HEARDOC_NON_EX 1147483648
 
 # define BUFF_SIZE 1024
 # define MAX_FD 256
@@ -43,6 +48,8 @@
 # define SINGLE_QUOT 1
 # define DOUBLE_QUOT 2
 # define QUOT_FLAG 1
+# define QUOT_DUMMY_DOUBLE 2
+# define QUOT_DUMMY_SINGLE 3
 
 # define ERROR_NOT_FOUND -2
 # define ERROR_AMB_REDIRECT -3
@@ -84,7 +91,6 @@ typedef struct s_status {
 	t_tree		*tree;
 	char		**env;
 	t_env		*env_tab;
-	char		*memo;
 	int			exit;
 }				t_status;
 
@@ -103,9 +109,8 @@ typedef struct s_ex_flag {
 
 extern t_global		*g_signal;
 
-int			read_parse_command(t_status *status, char **s, \
-	char **memo, t_tree **tree);
-int			read_input(char **s, char **memo, t_status *status);
+int			read_parse_command(t_status *status, t_tree **tree);
+int			read_input(char **s, t_status *status);
 int			read_command_split(char ***split, char *s);
 int			read_command(char **split, t_command *com, int *id);
 int			read_command2tree(t_tree **root, char **split);
@@ -122,6 +127,12 @@ void		redirect_init(int fd[3], int fork_flag);
 int			redirect_set(int fd[3], char **file, int *tofd, int fork_flag);
 int			redirect_close(int fd[3], int flag, int fork_flag);
 
+int			hear_document(t_status *status, t_tree *tree, int flag);
+int			heardoc_before_expansion(char **file, int *fd);
+int			heardoc_after_expansion(char **file, int *fd);
+int			heardoc_redirect(char *file);
+void		heardoc_handler(int signum);
+
 int			set_signal(int mode);
 t_global	*signal_init(void);
 void		signal_reset(void);
@@ -131,8 +142,6 @@ int			status_value_conversion(int flag);
 int			wait_conversion(int flag);
 
 int			variable_expansion_all(t_status *status, t_command *com);
-int			variable_expansion(char ***target, int file_flag, \
-	t_status *status);
 int			expansion_sentence(char *str, char **dst, t_status *status);
 int			expansion_split(char *s, char ***dst);
 int			search_variable(char **buf, char *str, t_ex_flag *fl, \

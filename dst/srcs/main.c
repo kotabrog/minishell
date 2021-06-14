@@ -16,20 +16,17 @@ t_global	*g_signal = NULL;
 
 void	loop_shell(t_status *status)
 {
-	char	*s;
-	int		flag;
+	int	flag;
 
 	while (TRUE)
 	{
-		flag = 0;
 		set_signal(0);
-		if (read_parse_command(status, &s, &(status->memo), &(status->tree)))
+		if (read_parse_command(status, &(status->tree)))
 			continue ;
-		flag = process_tree(status, status->tree);
-		printf("flag: %d\n", flag);
-		printf("exit status: %d\n", status->exit);
-		debug_tree(status->tree);
-		ft_free(&s);
+		flag = hear_document(status, status->tree, 0);
+		set_signal(1);
+		if (!flag)
+			process_tree(status, status->tree);
 		status_turn_finish(status);
 	}
 }

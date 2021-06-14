@@ -14,8 +14,14 @@
 
 static void	input_handler(int signum)
 {
-	ft_putstr_fd("\b\b  \b\b\nminishell$ ", 1);
-	g_signal->signal_flag = signum;
+	if (signum == SIGINT)
+	{
+		ft_putstr_fd("\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+		g_signal->signal_flag = signum;
+	}
 }
 
 static void	execution_handler(int signam)
@@ -54,24 +60,21 @@ int	set_signal(int mode)
 	if (mode == 0)
 	{
 		signal_reset();
-		if (signal(SIGINT, input_handler) == SIG_ERR)
-			return (errno);
-		if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+		if (signal(SIGINT, input_handler) == SIG_ERR || \
+				signal(SIGQUIT, input_handler) == SIG_ERR)
 			return (errno);
 	}
 	else if (mode == 1)
 	{
 		signal_reset();
-		if (signal(SIGINT, execution_handler) == SIG_ERR)
-			return (errno);
-		if (signal(SIGQUIT, execution_handler) == SIG_ERR)
+		if (signal(SIGINT, execution_handler) == SIG_ERR || \
+				signal(SIGQUIT, execution_handler) == SIG_ERR)
 			return (errno);
 	}
-	else
+	else if (mode == 2)
 	{
-		if (signal(SIGINT, SIG_IGN) == SIG_ERR)
-			return (errno);
-		if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+		if (signal(SIGINT, heardoc_handler) == SIG_ERR || \
+				signal(SIGQUIT, heardoc_handler) == SIG_ERR)
 			return (errno);
 	}
 	return (SUCCESS);

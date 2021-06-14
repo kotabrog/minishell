@@ -1,35 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_input.c                                       :+:      :+:    :+:   */
+/*   heardoc_redirect.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/21 20:11:26 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/05/21 21:51:22 by ksuzuki          ###   ########.fr       */
+/*   Created: 2021/06/13 23:44:16 by ksuzuki           #+#    #+#             */
+/*   Updated: 2021/06/14 00:59:14 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	read_input(char **s, t_status *status)
+void	heardoc_handler(int signum)
 {
-	int			flag;
-
-	flag = FALSE;
-	while (!flag)
+	if (signum == SIGINT)
 	{
-		*s = readline("minishell$ ");
-		if (*s == NULL)
-			builtin_exit(status, NULL, 0);
-		else if (ft_strlen(*s) > 0)
-		{
-			add_history(*s);
-			flag = TRUE;
-		}
-		else
-			free(*s);
+		rl_done = 1;
+		ft_putstr_fd("\n", 0);
+		g_signal->signal_flag = signum;
 	}
-	error_if(errno, errno, NULL, TRUE);
-	return (flag);
+}
+
+int	heardoc_redirect(char *file)
+{
+	int	fd[2];
+
+	if (pipe(fd) == -1)
+		return (ERROR);
+	if (dup2(fd[READ], READ))
+	{
+		close(fd[WRITE]);
+		close(fd[READ]);
+		return (ERROR);
+	}
+	ft_putstr_fd(file, fd[WRITE]);
+	close(fd[WRITE]);
+	return (SUCCESS);
 }

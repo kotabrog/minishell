@@ -23,11 +23,7 @@ int	process_execute(t_status *status, t_command *com, int fork_flag)
 	if (pid == -1)
 		return (errno);
 	if (pid == 0)
-	{
 		exit(error_file(search_execve(com->s, status->env), TRUE, com->s[0]));
-		// execve(com->s[0], com->s, status->env);
-		// exit(error_file(errno, TRUE, com->s[0]));
-	}
 	if (fork_flag)
 		g_signal->exit_pid = pid;
 	pid = waitpid(pid, &wait_status, 0);

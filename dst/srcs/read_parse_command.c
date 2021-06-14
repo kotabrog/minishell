@@ -28,17 +28,17 @@ static int	set_put_free_return(t_status *status, int flag, char **com, \
 	return (flag);
 }
 
-int	read_parse_command(t_status *status, char **s, char **memo, t_tree **tree)
+int	read_parse_command(t_status *status, t_tree **tree)
 {
 	char	*command;
 	char	**split_command;
 	int		flag;
 
-	if (read_input(&command, memo, status) == ERROR)
+	if (read_input(&command, status) == ERROR)
 		return (set_put_free_return(status, ERROR, NULL, NULL));
 	if (g_signal->signal_flag)
 		set_exit_status(status, EXIT_FAILURE);
-	set_signal(1);
+	set_signal(2);
 	flag = read_command_split(&split_command, command);
 	if (flag)
 		return (set_put_free_return(status, flag, &command, NULL));
@@ -50,7 +50,7 @@ int	read_parse_command(t_status *status, char **s, char **memo, t_tree **tree)
 		set_put_free_return(status, SUCCESS, &command, &split_command);
 		return (ERROR);
 	}
-	*s = command;
+	free(command);
 	ft_free_double_char(&split_command);
 	return (SUCCESS);
 }

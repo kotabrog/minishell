@@ -86,7 +86,7 @@ static int	multi_to_single(char ***target, char ***dst)
 	return (SUCCESS);
 }
 
-int	variable_expansion(char ***target, int file_flag, t_status *status)
+static int	variable_expansion(char ***target, int file_flag, t_status *status)
 {
 	char	***dst;
 	int		flag;
@@ -118,8 +118,12 @@ int	variable_expansion_all(t_status *status, t_command *com)
 {
 	int	flag;
 
+	if (heardoc_before_expansion(com->file, com->fd))
+		return (ERROR);
 	flag = variable_expansion(&(com->file), TRUE, status);
 	if (flag)
 		return (flag);
+	if (heardoc_after_expansion(com->file, com->fd))
+		return (ERROR);
 	return (variable_expansion(&(com->s), FALSE, status));
 }

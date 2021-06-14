@@ -33,11 +33,13 @@ static int	switch_timing(char *s, int index, int quart_flag[2])
 		return (FALSE);
 	else if (s[index] == '\'' || s[index] == '\"')
 		return (FALSE);
-	else if (s[index] == ';' || s[index] == '<' || s[index] == '|')
+	else if (s[index] == ';' ||s[index] == '|')
 		return (TRUE);
 	else if (s[index] == '>' && (index == 0 || s[index - 1] != '>'))
 		return (TRUE);
-	else if (s[index] != '>' && !ft_isspace(s[index]) && \
+	else if (s[index] == '<' && (index == 0 || s[index - 1] != '<'))
+		return (TRUE);
+	else if (s[index] != '>' && s[index] != '<' && !ft_isspace(s[index]) && \
 			(index == 0 || switch_point(s[index - 1])))
 		return (TRUE);
 	return (FALSE);
