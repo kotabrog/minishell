@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 23:33:23 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/05/21 21:35:27 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/14 20:52:36 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,15 @@ typedef struct s_tree {
 	struct s_tree	*right;
 }					t_tree;
 
+typedef struct s_env {
+	char			*value;
+	struct s_env	*next;
+}					t_env;
+
 typedef struct s_status {
 	t_tree		*tree;
 	char		**env;
+	t_env		*env_tab;
 	char		*memo;
 	int			exit;
 }				t_status;
@@ -178,5 +184,7 @@ int			ft_strndup_ex(char **dest, const char *s, ssize_t n);
 void		debug_print_split(char *s, char **split);
 void		debug_command(t_command *command);
 void		debug_tree(t_tree *tree);
+int			env_init(t_status *status, char **arg_env);
+int			do_env(t_env *env);
 
 #endif

@@ -1,38 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   status_utility.c                                   :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/25 21:54:18 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/14 20:58:15 by tkano            ###   ########.fr       */
+/*   Created: 2021/05/20 22:25:31 by tkano             #+#    #+#             */
+/*   Updated: 2021/05/23 19:51:03 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	status_init(t_status **status, char **envp)
+int	do_env(t_env *env)
 {
-	if (ft_malloc(status, sizeof(t_status), 1))
-		return (errno);
-	(*status)->tree = NULL;
-	(*status)->memo = NULL;
-	(*status)->env = envp;
-	env_init((*status), envp);
-	(*status)->exit = 0;
-	return (SUCCESS);
-}
-
-int	status_turn_finish(t_status *status)
-{
-	tree_free(&(status->tree));
-	return (SUCCESS);
-}
-
-int	status_finish(t_status *status)
-{
-	free(status->memo);
-	free(status);
+	while (env && env->next != NULL)
+	{
+		ft_putendl_fd(env->value, 1);
+		env = env->next;
+	}
+	if (env)
+		ft_putendl_fd(env->value, 1);
 	return (SUCCESS);
 }

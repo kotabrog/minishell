@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 20:55:23 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/07 23:00:56 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/14 21:02:25 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ static int	choice_command(t_status *status, t_command *com, int fork_flag)
 		return (builtin_exit(status, com, fork_flag));
 	if (ft_strcmp(com->s[0], "echo") == 0)
 		return (builtin_echo(com));
+	if (ft_strcmp(com->s[0], "env") == 0)
+		//return (0);
+		return (do_env(status->env_tab));
 	if (ft_strcmp(com->s[0], "loop") == 0)
 		while (TRUE)
 			;
