@@ -23,6 +23,9 @@
 # include <signal.h>
 # include <limits.h>
 # include <sys/stat.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <sys/ioctl.h>
 
 # include "../libft/libft.h"
 
@@ -78,7 +81,6 @@ typedef struct s_tree {
 typedef struct s_status {
 	t_tree		*tree;
 	char		**env;
-	char		*memo;
 	int			exit;
 }				t_status;
 
@@ -97,9 +99,8 @@ typedef struct s_ex_flag {
 
 extern t_global		*g_signal;
 
-int			read_parse_command(t_status *status, char **s, \
-	char **memo, t_tree **tree);
-int			read_input(char **s, char **memo, t_status *status);
+int			read_parse_command(t_status *status, t_tree **tree);
+int			read_input(char **s, t_status *status);
 int			read_command_split(char ***split, char *s);
 int			read_command(char **split, t_command *com, int *id);
 int			read_command2tree(t_tree **root, char **split);

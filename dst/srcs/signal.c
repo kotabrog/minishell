@@ -16,11 +16,12 @@ static void	input_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
-		ft_putstr_fd("\b\b  \b\b\nminishell$ ", 1);
+		ft_putstr_fd("\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
 		g_signal->signal_flag = signum;
 	}
-	if (signum == SIGQUIT)
-		ft_putstr_fd("\b\b  \b\b", 1);
 }
 
 static void	execution_handler(int signam)
