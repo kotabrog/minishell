@@ -18,7 +18,11 @@ int	status_init(t_status **status, char **envp)
 		return (errno);
 	(*status)->tree = NULL;
 	(*status)->env = envp;
-	env_init((*status), envp);
+	if (env_init((*status), envp))
+	{
+		free(status);
+		return (ERROR);
+	}
 	(*status)->exit = 0;
 	return (SUCCESS);
 }
