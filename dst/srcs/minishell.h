@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 23:33:23 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/14 21:36:43 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/15 21:07:48 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@
 # define ERROR_EXIT_MANY -12
 # define ERROR_PERMISSION -13
 # define ERROR_IS_DIR -14
+# define IN_VALID_ENV -15
 
 # define SIGNAL_VALUE 128
 
@@ -195,5 +196,7 @@ void		debug_command(t_command *command);
 void		debug_tree(t_tree *tree);
 int			env_init(t_status *status, char **arg_env);
 int			do_env(t_env *env);
+int			do_export(char **command, t_env *env);
+void		put_sorted_env(t_env *env);
 
 #endif

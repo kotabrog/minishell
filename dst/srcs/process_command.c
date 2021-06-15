@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 20:55:23 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/14 21:02:25 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/15 17:19:45 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,9 @@ static int	choice_command(t_status *status, t_command *com, int fork_flag)
 	if (ft_strcmp(com->s[0], "echo") == 0)
 		return (builtin_echo(com));
 	if (ft_strcmp(com->s[0], "env") == 0)
-		//return (0);
 		return (do_env(status->env_tab));
+	if (ft_strcmp(com->s[0], "export") == 0)
+		return (do_export(&(com->s[0]), status->env_tab));
 	if (ft_strcmp(com->s[0], "loop") == 0)
 		while (TRUE)
 			;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 15:11:14 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/07 18:39:44 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/15 21:47:31 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ char	*error_make_massage(int n)
 	err_str[12] = "too many arguments";
 	err_str[13] = "Permission denied";
 	err_str[14] = "is a directory";
+	err_str[15] = "not a valid identifier";
 	return (err_str[n]);
 }
 
