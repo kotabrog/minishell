@@ -42,6 +42,7 @@ NAME	= minishell
 CC		= gcc
 CFLAGS	= -Wall -Wextra -Werror
 RM		= rm -f
+INPUTRC	= inputrc
 
 all		:	$(NAME)
 
@@ -50,7 +51,7 @@ all		:	$(NAME)
 
 $(NAME)	:	$(OBJS)
 			$(MAKE) -C ./libft
-			echo > ~/.inputrc set echo-control-characters off
+			cp inputrc ~/.inputrc
 			$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
 
 sani	:	$(OBJS)

@@ -61,7 +61,7 @@ int	set_signal(int mode)
 	{
 		signal_reset();
 		if (signal(SIGINT, input_handler) == SIG_ERR || \
-				signal(SIGQUIT, input_handler) == SIG_ERR)
+				signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 			return (errno);
 	}
 	else if (mode == 1)
@@ -74,7 +74,7 @@ int	set_signal(int mode)
 	else if (mode == 2)
 	{
 		if (signal(SIGINT, heardoc_handler) == SIG_ERR || \
-				signal(SIGQUIT, heardoc_handler) == SIG_ERR)
+				signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 			return (errno);
 	}
 	return (SUCCESS);
