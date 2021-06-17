@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 18:44:13 by tkano             #+#    #+#             */
-/*   Updated: 2021/06/14 20:49:35 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/15 16:08:46 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int		env_init(t_status *status, char **arg_env)
 	if (!env)
 		return (ERROR);
 	env->value = ft_strdup(arg_env[0]);
+	if (env->value == NULL)
+		return (ERROR);
 	env->next = NULL;
 	status->env_tab = env;
 	i = 1;
