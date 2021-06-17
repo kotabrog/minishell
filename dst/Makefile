@@ -30,6 +30,7 @@ SRCNAME	=	command_utility1.c\
 			search_execve.c\
 			env_init.c\
 			env.c\
+			do_unset.c\
 			do_export.c\
 			put_sorted_env.c\
 			hear_document.c\
