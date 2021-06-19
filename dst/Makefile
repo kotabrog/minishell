@@ -11,6 +11,7 @@ SRCNAME	=	command_utility1.c\
 			tree_utility1.c\
 			utility1.c\
 			utility2.c\
+			utility3.c\
 			status_utility.c\
 			process_tree.c\
 			process_pipe.c\

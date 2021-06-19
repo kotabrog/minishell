@@ -30,7 +30,7 @@ int	search_variable(char **buf, char *str, t_ex_flag *fl, t_status *status)
 	flag = SUCCESS;
 	if (str[fl->start + 1] == '?')
 		s = ft_itoa(status->exit);
-	else if (!ft_isalpha(str[fl->start + 1]))
+	else if (!ft_isalpha_underbar(str[fl->start + 1]))
 		s = "$";
 	else
 	{
@@ -44,7 +44,7 @@ int	search_variable(char **buf, char *str, t_ex_flag *fl, t_status *status)
 	ft_free(buf);
 	if (str[fl->start + 1] == '?')
 		free(s);
-	else if (!ft_isalpha(str[fl->start + 1]))
+	else if (!ft_isalpha_underbar(str[fl->start + 1]))
 		fl->end -= 1;
 	*buf = temp;
 	return (temp == NULL);
