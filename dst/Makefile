@@ -33,6 +33,7 @@ SRCNAME	=	command_utility1.c\
 			do_unset.c\
 			do_export.c\
 			put_sorted_env.c\
+			do_pwd.c\
 			hear_document.c\
 			hear_doc_ex.c\
 			heardoc_redirect.c

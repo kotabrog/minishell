@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 23:33:23 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/17 20:30:11 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/19 14:55:30 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,5 +199,6 @@ int			do_env(t_env *env);
 int			do_export(char **command, t_env *env);
 int			do_unset(char **command, t_status *st);
 void		put_sorted_env(t_env *env);
+int			do_pwd(void);
 
 #endif
