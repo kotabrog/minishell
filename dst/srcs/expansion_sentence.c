@@ -82,9 +82,9 @@ static int	expansion_loop(char *str, char **dst, t_status *status, \
 	flag = SUCCESS;
 	while (flag == SUCCESS && str[++(fl->end)])
 	{
-		if ((fl->var && fl->start + 1 == fl->end && \
-					!ft_isalpha(str[fl->end])) || \
-				(fl->var && !ft_isalnum(str[fl->end])) || \
+		if ((fl->var && ((fl->start + 1 == fl->end && \
+					!ft_isalpha_underbar(str[fl->end])) || \
+					!ft_isalnum_underbar(str[fl->end]))) || \
 				(fl->quote == SINGLE_QUOT && str[fl->end] == '\'') || \
 				(fl->quote == DOUBLE_QUOT && str[fl->end] == '\"') || \
 				(fl->start != fl->end && !fl->quote && !fl->var && \

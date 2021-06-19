@@ -190,6 +190,8 @@ int			ft_strcmp(const char *s1, const char *s2);
 char		**ft_strdup_ex(char **s);
 char		*ft_strndup(const char *s, ssize_t n);
 int			ft_strndup_ex(char **dest, const char *s, ssize_t n);
+int			ft_isalpha_underbar(int c);
+int			ft_isalnum_underbar(int c);
 
 void		debug_print_split(char *s, char **split);
 void		debug_command(t_command *command);
