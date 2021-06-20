@@ -35,7 +35,9 @@ int	status_value_conversion(int flag)
 {
 	if (flag == SUCCESS)
 		return (EXIT_SUCCESS);
-	if (flag == ERROR || flag == ERROR_AMB_REDIRECT || flag == ERROR_EXIT_MANY)
+	if (flag == ERROR || flag == ERROR_AMB_REDIRECT || \
+		flag == ERROR_EXIT_MANY || \
+		(-18 <= flag && flag <= -15))
 		return (EXIT_FAILURE);
 	if (flag == ERROR_NOT_FOUND)
 		return (127);

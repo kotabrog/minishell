@@ -22,5 +22,5 @@ int	do_pwd(void)
 		return (SUCCESS);
 	}
 	else
-		return (ERROR);
+		return (EXIT_FAILURE);
 }
