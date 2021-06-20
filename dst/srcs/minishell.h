@@ -133,6 +133,7 @@ int			heardoc_before_expansion(char **file, int *fd);
 int			heardoc_after_expansion(char **file, int *fd);
 int			heardoc_redirect(char *file);
 void		heardoc_handler(int signum);
+int			heardoc_event_hook(void);
 
 int			set_signal(int mode);
 t_global	*signal_init(void);

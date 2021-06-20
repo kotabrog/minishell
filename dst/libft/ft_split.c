@@ -97,6 +97,6 @@ char	**ft_split(char const *s, char c)
 	ret = malloc(sizeof(char *) * (count_str((char *)s, c) + 1));
 	if (!ret)
 		return (NULL);
-	create_str((char *)s, c, ret);
+	ret = create_str((char *)s, c, ret);
 	return (ret);
 }
