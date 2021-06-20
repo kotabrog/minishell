@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 23:33:23 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/15 21:07:48 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/20 11:33:41 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,9 @@
 # define ERROR_PERMISSION -13
 # define ERROR_IS_DIR -14
 # define IN_VALID_ENV -15
+# define NO_SET_HOME -16
+# define NO_SET_OLD -17
+# define NO_DIR -18
 
 # define SIGNAL_VALUE 128
 
@@ -191,6 +194,8 @@ int			ft_strcmp(const char *s1, const char *s2);
 char		**ft_strdup_ex(char **s);
 char		*ft_strndup(const char *s, ssize_t n);
 int			ft_strndup_ex(char **dest, const char *s, ssize_t n);
+int			ft_isalpha_underbar(int c);
+int			ft_isalnum_underbar(int c);
 
 void		debug_print_split(char *s, char **split);
 void		debug_command(t_command *command);
@@ -198,6 +203,11 @@ void		debug_tree(t_tree *tree);
 int			env_init(t_status *status, char **arg_env);
 int			do_env(t_env *env);
 int			do_export(char **command, t_env *env);
+int			do_unset(char **command, t_status *st);
 void		put_sorted_env(t_env *env);
+int			do_pwd(void);
+int			do_cd(char **command, t_env *env);
+int			is_env(t_env *env, char *args);
+int			env_add(const char *value, t_env *env);
 
 #endif

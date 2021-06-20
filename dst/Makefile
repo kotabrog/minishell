@@ -11,6 +11,7 @@ SRCNAME	=	command_utility1.c\
 			tree_utility1.c\
 			utility1.c\
 			utility2.c\
+			utility3.c\
 			status_utility.c\
 			process_tree.c\
 			process_pipe.c\
@@ -30,8 +31,11 @@ SRCNAME	=	command_utility1.c\
 			search_execve.c\
 			env_init.c\
 			env.c\
+			do_unset.c\
 			do_export.c\
 			put_sorted_env.c\
+			do_pwd.c\
+			do_cd.c\
 			hear_document.c\
 			hear_doc_ex.c\
 			heardoc_redirect.c

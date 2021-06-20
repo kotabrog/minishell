@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 15:11:14 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/15 21:47:31 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/20 11:34:25 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ char	*error_make_massage(int n)
 	err_str[13] = "Permission denied";
 	err_str[14] = "is a directory";
 	err_str[15] = "not a valid identifier";
+	err_str[16] = "HOME not set";
+	err_str[17] = "OLDPWD not set";
+	err_str[18] = "No such file or directory";
 	return (err_str[n]);
 }
 
