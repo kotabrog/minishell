@@ -70,7 +70,9 @@ static int	read_document(char **end, int flag, int *fd)
 	parse_end(*end, fd);
 	while (!g_signal->signal_flag && !end_flag && !flag)
 	{
+		rl_event_hook = heardoc_event_hook;
 		s = readline("> ");
+		rl_event_hook = NULL;
 		if (s == NULL || ft_strcmp(s, *end) == 0)
 			end_flag = TRUE;
 		else if (!g_signal->signal_flag)

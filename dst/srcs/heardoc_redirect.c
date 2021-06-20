@@ -12,12 +12,16 @@
 
 #include "minishell.h"
 
+int	heardoc_event_hook(void)
+{
+	return (0);
+}
+
 void	heardoc_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
 		rl_done = 1;
-		ft_putstr_fd("\n", 0);
 		g_signal->signal_flag = signum;
 	}
 }

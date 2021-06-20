@@ -50,9 +50,6 @@ static int	choice_command(t_status *status, t_command *com, int fork_flag)
 		return (do_pwd());
 	if (ft_strcmp(com->s[0], "cd") == 0)
 		return (do_cd(&(com->s[0]), status->env_tab));
-	if (ft_strcmp(com->s[0], "loop") == 0)
-		while (TRUE)
-			;
 	return (process_execute(status, com, fork_flag));
 }
 

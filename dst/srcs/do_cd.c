@@ -94,8 +94,8 @@ int	do_cd(char **command, t_env *env)
 	int		cd_ret;
 
 	if (!command[1])
-		return (go_to_path(0, env));
-	if (ft_strcmp(command[1], "-") == 0)
+		cd_ret = go_to_path(0, env);
+	else if (ft_strcmp(command[1], "-") == 0)
 		cd_ret = go_to_path(1, env);
 	else
 	{
@@ -104,5 +104,5 @@ int	do_cd(char **command, t_env *env)
 		if (cd_ret != 0)
 			return (error_put(NO_DIR, "cd"));
 	}
-	return (cd_ret);
+	return (status_value_conversion(cd_ret));
 }
