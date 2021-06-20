@@ -46,7 +46,7 @@ INCLUDE	= -I./libft -I$(shell brew --prefix readline)/include
 LDFLAGS = -L./libft/ -lft -L$(shell brew --prefix readline)/lib -lreadline -lhistory
 NAME	= minishell
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS	= -Wall -Wextra -Werror
 RM		= rm -f
 INPUTRC	= inputrc
 
