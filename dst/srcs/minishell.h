@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 23:33:23 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/19 14:55:30 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/20 11:33:41 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,9 @@
 # define ERROR_PERMISSION -13
 # define ERROR_IS_DIR -14
 # define IN_VALID_ENV -15
+# define NO_SET_HOME -16
+# define NO_SET_OLD -17
+# define NO_DIR -18
 
 # define SIGNAL_VALUE 128
 
@@ -202,5 +205,8 @@ int			do_export(char **command, t_env *env);
 int			do_unset(char **command, t_status *st);
 void		put_sorted_env(t_env *env);
 int			do_pwd(void);
+int			do_cd(char **command, t_env *env);
+int			is_env(t_env *env, char *args);
+int			env_add(const char *value, t_env *env);
 
 #endif

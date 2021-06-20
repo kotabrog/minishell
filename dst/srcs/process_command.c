@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 20:55:23 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/19 14:58:44 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/19 18:44:12 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ static int	choice_command(t_status *status, t_command *com, int fork_flag)
 		return (do_unset(&(com->s[0]), status));
 	if (ft_strcmp(com->s[0], "pwd") == 0)
 		return (do_pwd());
+	if (ft_strcmp(com->s[0], "cd") == 0)
+		return (do_cd(&(com->s[0]), status->env_tab));
 	if (ft_strcmp(com->s[0], "loop") == 0)
 		while (TRUE)
 			;

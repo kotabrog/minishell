@@ -35,6 +35,7 @@ SRCNAME	=	command_utility1.c\
 			do_export.c\
 			put_sorted_env.c\
 			do_pwd.c\
+			do_cd.c\
 			hear_document.c\
 			hear_doc_ex.c\
 			heardoc_redirect.c
@@ -45,7 +46,7 @@ INCLUDE	= -I./libft -I$(shell brew --prefix readline)/include
 LDFLAGS = -L./libft/ -lft -L$(shell brew --prefix readline)/lib -lreadline -lhistory
 NAME	= minishell
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror -g -fsanitize=address
 RM		= rm -f
 INPUTRC	= inputrc
 
