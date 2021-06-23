@@ -6,38 +6,17 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 21:47:57 by tkano             #+#    #+#             */
-/*   Updated: 2021/06/15 20:17:30 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/23 23:01:24 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	size_value(t_env *env)
+void	set_in_list(t_env *env, char *ret)
 {
-	size_t	ret;
+	int	i;
+	int	j;
 
-	ret = 0;
-	while (env && env->next != NULL)
-	{
-		if (env->value != NULL)
-		{
-			ret += ft_strlen(env->value);
-			ret++;
-		}
-		env = env->next;
-	}
-	return (ret);
-}
-
-char	*lst_to_env(t_env *env)
-{
-	char	*ret;
-	int		i;
-	int		j;
-
-	ret = malloc(sizeof(char) * size_value(env) + 1);
-	if (!ret)
-		return (NULL);
 	i = 0;
 	while (env && env->next != NULL)
 	{
@@ -56,17 +35,17 @@ char	*lst_to_env(t_env *env)
 		env = env->next;
 	}
 	ret[i] = '\0';
-	return (ret);
 }
 
-int		tab_len(char **env)
+char	*lst_to_env(t_env *env)
 {
-	int	i;
+	char	*ret;
 
-	i = 0;
-	while (env[i])
-		i++;
-	return (i);
+	ret = malloc(sizeof(char) * size_value(env) + 1);
+	if (!ret)
+		return (NULL);
+	set_in_list(env, ret);
+	return (ret);
 }
 
 void	sort_tab(char **tab, int len)
@@ -95,13 +74,15 @@ void	sort_tab(char **tab, int len)
 	}
 }
 
-void	put_sorted_env(t_env *env)
+int	put_sorted_env(t_env *env)
 {
 	int		i;
 	char	**tmp;
 	char	*str_env;
 
 	str_env = lst_to_env(env);
+	if (!str_env)
+		return (ERROR);
 	tmp = ft_split(str_env, '\n');
 	ft_free(&str_env);
 	sort_tab(tmp, tab_len(tmp));
@@ -113,4 +94,5 @@ void	put_sorted_env(t_env *env)
 		i++;
 	}
 	ft_free_double_char(&tmp);
+	return (SUCCESS);
 }
