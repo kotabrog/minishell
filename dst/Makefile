@@ -34,7 +34,7 @@ SRCNAME	=	command_utility1.c\
 			do_unset.c\
 			do_export.c\
 			put_sorted_env.c\
-			env_size.c\
+			env_utility.c\
 			do_pwd.c\
 			do_cd.c\
 			hear_document.c\

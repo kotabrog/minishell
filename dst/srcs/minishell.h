@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 23:33:23 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/23 22:52:32 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/25 18:35:16 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_status {
 	t_tree		*tree;
 	char		**env;
 	t_env		*env_tab;
+	t_env		*env_tmp;
 	int			exit;
 }				t_status;
 
@@ -201,8 +202,9 @@ void		debug_print_split(char *s, char **split);
 void		debug_command(t_command *command);
 void		debug_tree(t_tree *tree);
 int			env_init(t_status *status, char **arg_env);
+int			tmp_env_init(t_status *status, char **arg_env);
 int			do_env(t_env *env);
-int			do_export(char **command, t_env *env);
+int			do_export(char **command, t_env *env, t_env *tmp);
 int			do_unset(char **command, t_status *st);
 int			put_sorted_env(t_env *env);
 int			do_pwd(void);
@@ -211,5 +213,7 @@ int			is_env(t_env *env, char *args);
 int			env_add(const char *value, t_env *env);
 int			tab_len(char **env);
 size_t		size_value(t_env *env);
+int			check_ex_arg(const char *arg);
+char		*get_env_key(char *dest, const char *src);
 
 #endif

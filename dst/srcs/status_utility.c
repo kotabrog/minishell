@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/25 21:54:18 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/14 20:58:15 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/24 10:12:30 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	status_init(t_status **status, char **envp)
 		return (errno);
 	(*status)->tree = NULL;
 	(*status)->env = envp;
-	if (env_init((*status), envp))
+	if (env_init((*status), envp) || tmp_env_init((*status), envp))
 	{
 		free(status);
 		return (ERROR);

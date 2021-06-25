@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 21:47:57 by tkano             #+#    #+#             */
-/*   Updated: 2021/06/23 23:01:24 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/25 18:23:22 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,16 @@ void	set_in_list(t_env *env, char *ret)
 	int	j;
 
 	i = 0;
-	while (env && env->next != NULL)
+	while (env && env->value != NULL)
 	{
-		if (env->value != NULL)
+		j = 0;
+		while (env->value[j])
 		{
-			j = 0;
-			while (env->value[j])
-			{
-				ret[i] = env->value[j];
-				i++;
-				j++;
-			}
+			ret[i] = env->value[j];
+			i++;
+			j++;
 		}
-		if (env->next->next != NULL)
+		if (env->next != NULL)
 			ret[i++] = '\n';
 		env = env->next;
 	}
