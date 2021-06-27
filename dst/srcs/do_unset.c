@@ -6,61 +6,76 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 20:45:34 by tkano             #+#    #+#             */
-/*   Updated: 2021/06/17 20:38:11 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/27 22:18:01 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static size_t	env_size(char *key)
+void	first_unset_tab(t_status *st, t_env *src)
 {
-	size_t	i;
-
-	i = 0;
-	while (key[i] && key[i] != '=')
-		i++;
-	return (i);
+	if (src->next)
+		st->env_tab = src->next;
+	else
+		st->env_tab = st->env_tab;
+	free_node(st->env_tab, src);
 }
 
-static void	free_node(t_status *st, t_env *new)
+void	first_unset_tmp(t_status *st, t_env *src)
 {
-	if (st->env_tab == new && new->next == NULL)
+	if (src->next)
+		st->env_tmp = src->next;
+	else
+		st->env_tmp = st->env_tmp;
+	free_node(st->env_tmp, src);
+}
+
+int	check_unset(const char *command)
+{
+	if (check_ex_arg(command) < 0)
+		return (IN_VALID_ENV);
+	if (ft_ischr(command, '=') == TRUE)
+		return (IN_VALID_ENV);
+	return (SUCCESS);
+}
+
+int	ret_unset(char **command)
+{
+	int	i;
+
+	i = 1;
+	while (command[i])
 	{
-		ft_free(&(st->env_tab->value));;
-		st->env_tab->next = NULL;
-		return ;
+		if (check_unset(command[i]) != SUCCESS)
+			return (error_put2(IN_VALID_ENV, "unset", command[i]));
+		i++;
 	}
-	ft_free(&(new->value));
-	ft_free(&new);
+	return (SUCCESS);
 }
 
-int		do_unset(char **command, t_status *st)
+int	do_unset(char **command, t_status *st)
 {
 	t_env	*new;
 	t_env	*tmp;
+	int		i;
 
 	new = st->env_tab;
+	tmp = st->env_tmp;
 	if (!(command[1]))
 		return (SUCCESS);
-	if (ft_strncmp(command[1], new->value, env_size(new->value)) == 0)
+	i = 1;
+	while (command[i])
 	{
-		if (new->next)
-			st->env_tab = new->next;
-		else
-			st->env_tab = st->env_tab;
-		free_node(st, new);
-		return (SUCCESS);
-	}
-	while (new && new->next)
-	{
-		if (ft_strncmp(command[1], new->next->value, env_size(new->next->value)) == 0)
+		if (check_unset(command[i]) == SUCCESS)
 		{
-			tmp = new->next->next;
-			free_node(st, new->next);
-			new->next = tmp;
-			return (SUCCESS);
+			if (ft_strncmp(command[i], new->value, env_size(new->value)) == 0)
+				first_unset_tab(st, new);
+			if (ft_strncmp(command[i], tmp->value, env_size(tmp->value)) == 0)
+				first_unset_tmp(st, tmp);
+			loop_unset(command[i], st->env_tab, new);
+			loop_unset(command[i], st->env_tmp, tmp);
 		}
-		new = new->next;
+		i++;
 	}
-	return (SUCCESS);
+	return (ret_unset(command));
 }

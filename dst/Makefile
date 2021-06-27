@@ -37,6 +37,7 @@ SRCNAME	=	command_utility1.c\
 			env_utility.c\
 			do_pwd.c\
 			do_cd.c\
+			unset_utility.c\
 			hear_document.c\
 			hear_doc_ex.c\
 			heardoc_redirect.c

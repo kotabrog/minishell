@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 18:33:43 by tkano             #+#    #+#             */
-/*   Updated: 2021/06/25 18:33:56 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/25 23:06:00 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	check_ex_arg(const char *arg)
 	int	i;
 
 	i = 0;
-	if (ft_isalpha(arg[i]) == FALSE)
+	if (ft_isalpha(arg[i]) == FALSE && arg[i] != '_')
 		return (IN_VALID_ENV);
 	while (arg[i] && arg[i] != '=')
 	{
