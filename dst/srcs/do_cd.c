@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 20:39:26 by tkano             #+#    #+#             */
-/*   Updated: 2021/06/20 11:40:53 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/25 19:21:06 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ static int	update_oldpwd(t_env *env)
 	if (!oldpwd)
 		return (ERROR);
 	if (is_env(env, oldpwd) == 0)
-		env_add(oldpwd, env);
+		if (env_add(oldpwd, env) != SUCCESS)
+			return (ERROR);
 	ft_free(&oldpwd);
 	return (SUCCESS);
 }
@@ -72,7 +73,8 @@ static int	go_to_path(int option, t_env *env)
 	env_path = NULL;
 	if (option == 0)
 	{
-		update_oldpwd(env);
+		if (update_oldpwd(env) != SUCCESS)
+			return (ERROR);
 		env_path = get_env_path(env, "HOME", 4);
 		if (!env_path)
 			return (error_put(NO_SET_HOME, "cd"));
@@ -82,7 +84,8 @@ static int	go_to_path(int option, t_env *env)
 		env_path = get_env_path(env, "OLDPWD", 6);
 		if (!env_path)
 			return (error_put(NO_SET_OLD, "cd"));
-		update_oldpwd(env);
+		if (update_oldpwd(env) != SUCCESS)
+			return (ERROR);
 	}
 	ret = chdir(env_path);
 	ft_free(&env_path);

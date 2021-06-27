@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 23:33:23 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/25 18:35:16 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/27 22:13:27 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,5 +215,9 @@ int			tab_len(char **env);
 size_t		size_value(t_env *env);
 int			check_ex_arg(const char *arg);
 char		*get_env_key(char *dest, const char *src);
+int			ft_ischr(const char *s1, const char c);
+size_t		env_size(char *key);
+void		free_node(t_env *dst, t_env *new);
+int			loop_unset(char *command, t_env *st, t_env *new);
 
 #endif
