@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 17:34:43 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/28 19:31:51 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/29 01:39:28 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,20 +52,43 @@ char	*env_value(char *env)
 	return (env_value);
 }
 
-static int	search_variable_env(char **s, char *str, t_env *env, t_ex_flag *fl)
+static int	get_variable_value(char **s, char *var_key, t_env *env)
 {
 	char	env_key[BUFF_SIZE];
 
-	*s = ft_strdup("");
 	while (env && env->value)
 	{
-		get_env_key(env_key, env->value);
-		if (strcmp(&str[fl->start + 1], env_key) == 0)
+		if (!get_env_key(env_key, env->value))
+			return (ERROR);
+		if (strcmp(var_key, env_key) == 0)
 		{
 			*s = env_value(env->value);
+			if (!*s)
+				return (ERROR);
 		}
 		env = env->next;
 	}
+	return (SUCCESS);
+}
+
+static int	search_variable_env(char **s, char *str, t_env *env, t_ex_flag *fl)
+{
+	char	var_key[BUFF_SIZE];
+	int		i;
+
+	if (fl->end > BUFF_SIZE)
+		return (ERROR);
+	*s = ft_strdup("");
+	i = 0;
+	while (i < fl->end - 1 && ft_isalnum_underbar(str[fl->start + 1 + 1]))
+	{
+		var_key[i] = str[fl->start + 1 + 1];
+		i++;
+	}
+	var_key[i] = '\0';
+	if (get_variable_value(s, var_key, env) == ERROR)
+		return (ERROR);
+	fl->end -= 1;
 	return (SUCCESS);
 }
 
