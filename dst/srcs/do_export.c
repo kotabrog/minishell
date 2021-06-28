@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 21:36:56 by tkano             #+#    #+#             */
-/*   Updated: 2021/06/25 18:32:20 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/28 11:33:52 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,24 @@ int	env_add(const char *value, t_env *env)
 	return (SUCCESS);
 }
 
+int	env_change(char *command, t_env *env, t_env *tmp)
+{
+	int	new_env;
+
+	new_env = is_env(env, command);
+	if (new_env == 1)
+	{
+		if (env_add(command, env) == ERROR)
+			return (ERROR);
+	}
+	else if (new_env == ERROR)
+		return (ERROR);
+	new_env = is_env(tmp, command);
+	if (new_env == 1)
+		return (env_add(command, tmp));
+	return (new_env);
+}
+
 int	export_env(char **command, t_env *env, t_env *tmp)
 {
 	int	error_num;
@@ -75,17 +93,16 @@ int	export_env(char **command, t_env *env, t_env *tmp)
 		error_num = IN_VALID_ENV;
 	if (error_num < 0)
 		return (error_put2(error_num, "export", command[1]));
-	new_env = 1;
 	if (error_num == 1)
-		new_env = is_env(env, command[1]);
-	if (new_env == 1)
+		return (env_change(command[1], env, tmp));
+	if (error_num == 2)
 	{
-		if (error_num == 1)
-			error_num = env_add(command[1], env);
-		return (env_add(command[1], tmp));
-	}
-	else
+		new_env = is_env(tmp, command[1]);
+		if (new_env == 1)
+			return (env_add(command[1], tmp));
 		return (new_env);
+	}
+	return (ERROR);
 }
 
 int	do_export(char **command, t_env *env, t_env *tmp)
