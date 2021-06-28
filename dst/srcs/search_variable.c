@@ -3,21 +3,69 @@
 /*                                                        :::      ::::::::   */
 /*   search_variable.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 17:34:43 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/06 23:14:39 by ksuzuki          ###   ########.fr       */
+/*   Updated: 2021/06/28 19:31:51 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	search_variable_env(char **s, char *str, char **env, t_ex_flag *fl)
+int	env_value_len(const char *env)
 {
-	*s = NULL;
-	str++;
-	env++;
-	fl->end -= 1;
+	int	i;
+	int	len_value;
+
+	len_value = 0;
+	i = 0;
+	while (env[i] && env[i] != '=')
+		i++;
+	i += 1;
+	while (env[i])
+	{
+		i++;
+		len_value++;
+	}
+	return (len_value);
+}
+
+char	*env_value(char *env)
+{
+	int		i;
+	int		j;
+	int		len_value;
+	char	*env_value;
+
+	len_value = env_value_len(env);
+	env_value = malloc(sizeof(char) * (len_value + 1));
+	if (!env_value)
+		return (NULL);
+	i = 0;
+	while (env[i] && env[i] != '=')
+		i++;
+	i += 1;
+	j = 0;
+	while (env[i])
+		env_value[j++] = env[i++];
+	env_value[j] = '\0';
+	return (env_value);
+}
+
+static int	search_variable_env(char **s, char *str, t_env *env, t_ex_flag *fl)
+{
+	char	env_key[BUFF_SIZE];
+
+	*s = ft_strdup("");
+	while (env && env->value)
+	{
+		get_env_key(env_key, env->value);
+		if (strcmp(&str[fl->start + 1], env_key) == 0)
+		{
+			*s = env_value(env->value);
+		}
+		env = env->next;
+	}
 	return (SUCCESS);
 }
 
@@ -34,7 +82,7 @@ int	search_variable(char **buf, char *str, t_ex_flag *fl, t_status *status)
 		s = "$";
 	else
 	{
-		flag = search_variable_env(&s, str, status->env, fl);
+		flag = search_variable_env(&s, str, status->env_tab, fl);
 		if (flag == SUCCESS && s == NULL)
 			return (SUCCESS);
 	}
