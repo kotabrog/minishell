@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 17:34:43 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/29 01:39:28 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/29 23:51:25 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,25 @@ int	env_value_len(const char *env)
 	return (len_value);
 }
 
-char	*env_value(char *env)
+int	get_env_value(char *env, char **env_value)
 {
 	int		i;
 	int		j;
 	int		len_value;
-	char	*env_value;
 
 	len_value = env_value_len(env);
-	env_value = malloc(sizeof(char) * (len_value + 1));
-	if (!env_value)
-		return (NULL);
+	*env_value = malloc(sizeof(char*) * (len_value + 1));
+	if (!*env_value)
+		return (ERROR);
 	i = 0;
 	while (env[i] && env[i] != '=')
 		i++;
 	i += 1;
 	j = 0;
 	while (env[i])
-		env_value[j++] = env[i++];
-	env_value[j] = '\0';
-	return (env_value);
+		*(env_value[j++]) = env[i++];
+	*(env_value[j]) = '\0';
+	return (SUCCESS);
 }
 
 static int	get_variable_value(char **s, char *var_key, t_env *env)
@@ -62,8 +61,7 @@ static int	get_variable_value(char **s, char *var_key, t_env *env)
 			return (ERROR);
 		if (strcmp(var_key, env_key) == 0)
 		{
-			*s = env_value(env->value);
-			if (!*s)
+			if (get_env_value(env->value, s) == ERROR)
 				return (ERROR);
 		}
 		env = env->next;
@@ -79,10 +77,12 @@ static int	search_variable_env(char **s, char *str, t_env *env, t_ex_flag *fl)
 	if (fl->end > BUFF_SIZE)
 		return (ERROR);
 	*s = ft_strdup("");
+	if (*s == NULL)
+		return (ERROR);
 	i = 0;
 	while (i < fl->end - 1 && ft_isalnum_underbar(str[fl->start + 1 + 1]))
 	{
-		var_key[i] = str[fl->start + 1 + 1];
+		var_key[i] = str[fl->start + 1 + i];
 		i++;
 	}
 	var_key[i] = '\0';
