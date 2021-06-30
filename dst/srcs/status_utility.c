@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/25 21:54:18 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/24 10:12:30 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/30 17:58:08 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	status_turn_finish(t_status *status)
 
 int	status_finish(t_status *status)
 {
+	env_free(status->env_tab);
+	env_free(status->env_tmp);
 	free(status);
 	return (SUCCESS);
 }

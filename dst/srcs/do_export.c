@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 21:36:56 by tkano             #+#    #+#             */
-/*   Updated: 2021/06/28 11:33:52 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/30 16:54:26 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	is_env(t_env *env, char *args)
 			if (tmp == NULL)
 				return (ERROR);
 			ft_free(&(env->value));
-			env->value = ft_strdup(args);
 			env->value = tmp;
 			return (SUCCESS);
 		}
