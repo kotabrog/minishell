@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 17:34:43 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/29 23:51:25 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/30 15:39:29 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,15 @@ int	get_env_value(char *env, char **env_value)
 {
 	int		i;
 	int		j;
-	int		len_value;
 
-	len_value = env_value_len(env);
-	*env_value = malloc(sizeof(char*) * (len_value + 1));
-	if (!*env_value)
-		return (ERROR);
 	i = 0;
 	while (env[i] && env[i] != '=')
 		i++;
 	i += 1;
 	j = 0;
 	while (env[i])
-		*(env_value[j++]) = env[i++];
-	*(env_value[j]) = '\0';
+		(*env_value)[j++] = env[i++];
+	(*env_value)[j] = '\0';
 	return (SUCCESS);
 }
 
@@ -61,6 +56,9 @@ static int	get_variable_value(char **s, char *var_key, t_env *env)
 			return (ERROR);
 		if (strcmp(var_key, env_key) == 0)
 		{
+			*s = malloc(sizeof(char) * (env_value_len(env->value) + 1));
+			if (!*s)
+				return (ERROR);
 			if (get_env_value(env->value, s) == ERROR)
 				return (ERROR);
 		}

@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 18:44:13 by tkano             #+#    #+#             */
-/*   Updated: 2021/06/24 10:14:02 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/30 16:35:47 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,20 @@ int	tmp_env_init(t_status *status, char **arg_env)
 	env->next = NULL;
 	status->env_tmp = env;
 	return (set_env(env, arg_env));
+}
+
+int	env_free(t_env *env)
+{
+	t_env	*tmp;
+
+	while (env && env->next)
+	{
+		tmp = env;
+		env = env->next;
+		ft_free(&(tmp->value));
+		ft_free(&(tmp));
+	}
+	ft_free(&(env->value));
+	ft_free(&env);
+	return (SUCCESS);
 }

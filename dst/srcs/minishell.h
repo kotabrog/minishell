@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 23:33:23 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/29 23:42:53 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/30 16:30:56 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,5 +220,7 @@ size_t		env_size(char *key);
 int			get_env_value(char *env, char **env_value);
 void		free_node(t_env *dst, t_env *new);
 int			loop_unset(char *command, t_env *st, t_env *new);
+int			env_value_len(const char *env);
+int			env_free(t_env *env);
 
 #endif
