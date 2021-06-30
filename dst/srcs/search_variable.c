@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 17:34:43 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/30 15:39:29 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/30 21:15:33 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,11 @@ int	get_env_value(char *env, char **env_value)
 	i = 0;
 	while (env[i] && env[i] != '=')
 		i++;
+	if (env[i] != '=')
+	{
+		(*env_value)[0] = '\0';
+		return (1);
+	}
 	i += 1;
 	j = 0;
 	while (env[i])

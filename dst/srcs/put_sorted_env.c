@@ -6,7 +6,7 @@
 /*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 21:47:57 by tkano             #+#    #+#             */
-/*   Updated: 2021/06/30 16:25:20 by tkano            ###   ########.fr       */
+/*   Updated: 2021/06/30 21:21:40 by tkano            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,24 +77,21 @@ int	put_env(char *tmp)
 	char	*env_value;
 
 	env_value = malloc(sizeof(char) * (env_value_len(tmp) + 1));
-	if (!*env_value)
-		return (ERROR);
 	if (!env_value)
 		return (ERROR);
 	if (get_env_key(env_key, tmp) == NULL)
 		return (ERROR);
-	if (get_env_value(tmp, &env_value) == ERROR)
-		return (ERROR);
+	if (get_env_value(tmp, &env_value) == 1)
+	{
+		ft_putstr_fd("declare -x ", 1);
+		ft_putendl_fd(env_key, 1);
+		return (SUCCESS);
+	}
 	ft_putstr_fd("declare -x ", 1);
 	ft_putstr_fd(env_key, 1);
-	if (env_value[0] != '\0')
-	{
-		ft_putstr_fd("=\"", 1);
-		ft_putstr_fd(env_value, 1);
-		ft_putendl_fd("\"", 1);
-	}
-	else
-		write(1, "\n", 1);
+	ft_putstr_fd("=\"", 1);
+	ft_putstr_fd(env_value, 1);
+	ft_putendl_fd("\"", 1);
 	ft_free(&env_value);
 	return (SUCCESS);
 }
