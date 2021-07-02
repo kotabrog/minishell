@@ -87,15 +87,14 @@ typedef struct s_tree {
 }					t_tree;
 
 typedef struct s_env {
+	char			*key;
 	char			*value;
 	struct s_env	*next;
 }					t_env;
 
 typedef struct s_status {
 	t_tree		*tree;
-	char		**env;
-	t_env		*env_tab;
-	t_env		*env_tmp;
+	t_env		*env;
 	int			exit;
 }				t_status;
 
@@ -126,7 +125,8 @@ int			process_pipe(t_status *status, t_tree *tree, \
 int			process_command(t_status *status, t_tree *tree, int parent[2], \
 		int fork_flag);
 void		all_command_close(t_tree *tree);
-int			search_execve(char **com, char **env);
+int			search_execve(char **com, t_env *env);
+int			make_env_array(t_env *env, char ***env_array);
 
 void		redirect_init(int fd[3], int fork_flag);
 int			redirect_set(int fd[3], char **file, int *tofd, int fork_flag);
@@ -198,29 +198,24 @@ int			ft_strndup_ex(char **dest, const char *s, ssize_t n);
 int			ft_isalpha_underbar(int c);
 int			ft_isalnum_underbar(int c);
 
-void		debug_print_split(char *s, char **split);
-void		debug_command(t_command *command);
-void		debug_tree(t_tree *tree);
-int			env_init(t_status *status, char **arg_env);
-int			tmp_env_init(t_status *status, char **arg_env);
+int			env_init(t_env **env);
+int			env_init_from_str(t_env **env, char *str);
+int			env_free(t_env **env);
+int			env_all_free(t_env **env);
+int			env_get_key_str(char **dest, char *str);
+int			env_get_value_str(char **dest, char *str, int key_len);
+t_env		*env_search_key(t_env *env, char *key);
+int			env_get_value(t_env *env, char *key, char **dest);
+int			env_len(t_env *env);
+int			env_add(char *key, char *value, t_env **env);
+void		env_change(char *key, char *value, t_env *env);
+
+int			env_set(t_env **env, char **envp);
 int			do_env(t_env *env);
-int			do_export(char **command, t_env *env, t_env *tmp);
-int			do_unset(char **command, t_status *st);
+int			do_export(char **command, t_env **env);
 int			put_sorted_env(t_env *env);
+int			do_unset(char **command, t_env **env);
 int			do_pwd(void);
 int			do_cd(char **command, t_env *env);
-int			is_env(t_env *env, char *args);
-int			env_add(const char *value, t_env *env);
-int			tab_len(char **env);
-size_t		size_value(t_env *env);
-int			check_ex_arg(const char *arg);
-char		*get_env_key(char *dest, const char *src);
-int			ft_ischr(const char *s1, const char c);
-size_t		env_size(char *key);
-int			get_env_value(char *env, char **env_value);
-void		free_node(t_env *dst, t_env *new);
-int			loop_unset(char *command, t_env *st, t_env *new);
-int			env_value_len(const char *env);
-int			env_free(t_env *env);
 
 #endif

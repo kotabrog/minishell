@@ -12,111 +12,73 @@
 
 #include "minishell.h"
 
-void	set_in_list(t_env *env, char *ret)
+static void	env_put(t_env **env)
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	while (env && env->value != NULL)
+	while (*env)
 	{
-		j = 0;
-		while (env->value[j])
+		ft_putstr_fd("declare -x ", 1);
+		ft_putstr_fd((*env)->key, 1);
+		if ((*env)->value)
 		{
-			ret[i] = env->value[j];
-			i++;
-			j++;
+			ft_putstr_fd("=\"", 1);
+			ft_putstr_fd((*env)->value, 1);
+			ft_putstr_fd("\"", 1);
 		}
-		if (env->next != NULL)
-			ret[i++] = '\n';
-		env = env->next;
+		ft_putchar_fd('\n', 1);
+		++env;
 	}
-	ret[i] = '\0';
 }
 
-char	*lst_to_env(t_env *env)
-{
-	char	*ret;
-
-	ret = malloc(sizeof(char) * size_value(env) + 1);
-	if (!ret)
-		return (NULL);
-	set_in_list(env, ret);
-	return (ret);
-}
-
-void	sort_tab(char **tab, int len)
+static void	env_sort(t_env **env)
 {
 	int		i;
 	int		j;
-	char	*tmp;
+	t_env	*tmp;
 
 	i = 0;
-	while (tab && i == 0)
+	while (env[i])
 	{
-		i = 1;
-		j = 0;
-		while (j < len - 1)
+		j = i + 1;
+		while (env[j])
 		{
-			if (ft_strncmp(tab[j], tab[j + 1], ft_strlen(tab[j])) > 0)
+			if (ft_strcmp(env[j]->key, env[i]->key) < 0)
 			{
-				tmp = tab [j];
-				tab[j] = tab[j + 1];
-				tab[j + 1] = tmp;
-				i = 0;
+				tmp = env[j];
+				env[j] = env[i];
+				env[i] = tmp;
 			}
-			j++;
+			++j;
 		}
-		len--;
+		++i;
 	}
 }
 
-int	put_env(char *tmp)
+static int	env_to_array(t_env *env, t_env ***env_array)
 {
-	char	env_key[BUFF_SIZE];
-	char	*env_value;
+	int	i;
 
-	env_value = malloc(sizeof(char) * (env_value_len(tmp) + 1));
-	if (!env_value)
+	i = 0;
+	if (ft_malloc(env_array, sizeof(t_env *), env_len(env) + 1))
 		return (ERROR);
-	if (get_env_key(env_key, tmp) == NULL)
-		return (ERROR);
-	if (get_env_value(tmp, &env_value) == 1)
+	while (env)
 	{
-		ft_putstr_fd("declare -x ", 1);
-		ft_putendl_fd(env_key, 1);
-		return (SUCCESS);
+		(*env_array)[i++] = env;
+		env = env->next;
 	}
-	ft_putstr_fd("declare -x ", 1);
-	ft_putstr_fd(env_key, 1);
-	ft_putstr_fd("=\"", 1);
-	ft_putstr_fd(env_value, 1);
-	ft_putendl_fd("\"", 1);
-	ft_free(&env_value);
+	(*env_array)[i] = NULL;
 	return (SUCCESS);
 }
 
 int	put_sorted_env(t_env *env)
 {
-	int		i;
-	char	**tmp;
-	char	*str_env;
+	t_env	**env_array;
 
-	str_env = lst_to_env(env);
-	if (!str_env)
-		return (ERROR);
-	tmp = ft_split(str_env, '\n');
-	ft_free(&str_env);
-	if (!tmp)
-		return (ERROR);
-	sort_tab(tmp, tab_len(tmp));
-	i = 0;
-	while (tmp[i])
-	{
-		if (put_env(tmp[i]) == ERROR)
-			return (ERROR);
-		i++;
-	}
-	ft_free_double_char(&tmp);
+	if (env == NULL)
+		return (SUCCESS);
+	if (env_to_array(env, &env_array))
+		return (status_value_conversion(ERROR));
+	env_sort(env_array);
+	env_put(env_array);
+	free(env_array);
 	return (SUCCESS);
 }

@@ -41,15 +41,15 @@ static int	choice_command(t_status *status, t_command *com, int fork_flag)
 	if (ft_strcmp(com->s[0], "echo") == 0)
 		return (builtin_echo(com));
 	if (ft_strcmp(com->s[0], "env") == 0)
-		return (do_env(status->env_tab));
+		return (do_env(status->env));
 	if (ft_strcmp(com->s[0], "export") == 0)
-		return (do_export(&(com->s[0]), status->env_tab, status->env_tmp));
+		return (do_export(com->s, &(status->env)));
 	if (ft_strcmp(com->s[0], "unset") == 0)
-		return (do_unset(&(com->s[0]), status));
+		return (do_unset(com->s, &(status->env)));
 	if (ft_strcmp(com->s[0], "pwd") == 0)
 		return (do_pwd());
 	if (ft_strcmp(com->s[0], "cd") == 0)
-		return (do_cd(&(com->s[0]), status->env_tab));
+		return (do_cd(com->s, status->env));
 	return (process_execute(status, com, fork_flag));
 }
 

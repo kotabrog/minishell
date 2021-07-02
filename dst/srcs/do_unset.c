@@ -12,70 +12,63 @@
 
 #include "minishell.h"
 
-void	first_unset_tab(t_status *st, t_env *src)
+static int	env_delete(t_env *env)
 {
-	if (src->next)
-		st->env_tab = src->next;
-	else
-		st->env_tab = st->env_tab;
-	free_node(st->env_tab, src);
-}
+	t_env	*temp;
 
-void	first_unset_tmp(t_status *st, t_env *src)
-{
-	if (src->next)
-		st->env_tmp = src->next;
-	else
-		st->env_tmp = st->env_tmp;
-	free_node(st->env_tmp, src);
-}
-
-int	check_unset(const char *command)
-{
-	if (check_ex_arg(command) < 0)
-		return (IN_VALID_ENV);
-	if (ft_ischr(command, '=') == TRUE)
-		return (IN_VALID_ENV);
+	temp = env->next;
+	env->next = temp->next;
+	env_free(&temp);
 	return (SUCCESS);
 }
 
-int	ret_unset(char **command)
+static int	is_key(char *key)
 {
-	int	i;
-
-	i = 1;
-	while (command[i])
+	if (!ft_isalpha_underbar(*key))
+		return (FALSE);
+	++key;
+	while (*key)
 	{
-		if (check_unset(command[i]) != SUCCESS)
-			return (error_put2(IN_VALID_ENV, "unset", command[i]));
-		i++;
+		if (!ft_isalnum_underbar(*key))
+			return (FALSE);
+		++key;
 	}
-	return (SUCCESS);
+	return (TRUE);
 }
 
-int	do_unset(char **command, t_status *st)
+static int	unset_one(char *command, t_env **env)
 {
-	t_env	*new;
-	t_env	*tmp;
-	int		i;
+	t_env	*temp;
 
-	new = st->env_tab;
-	tmp = st->env_tmp;
-	if (!(command[1]))
+	if (!is_key(command))
+		return (status_value_conversion(error_put2(IN_VALID_ENV, \
+				"unset", command)));
+	temp = *env;
+	if (ft_strcmp(temp->key, command) == 0)
+	{
+		*env = (*env)->next;
+		env_free(&temp);
 		return (SUCCESS);
-	i = 1;
-	while (command[i])
-	{
-		if (check_unset(command[i]) == SUCCESS)
-		{
-			if (ft_strncmp(command[i], new->value, env_size(new->value)) == 0)
-				first_unset_tab(st, new);
-			if (ft_strncmp(command[i], tmp->value, env_size(tmp->value)) == 0)
-				first_unset_tmp(st, tmp);
-			loop_unset(command[i], st->env_tab, new);
-			loop_unset(command[i], st->env_tmp, tmp);
-		}
-		i++;
 	}
-	return (ret_unset(command));
+	while (temp->next)
+	{
+		if (ft_strcmp(temp->next->key, command) == 0)
+			return (env_delete(temp));
+		temp = temp->next;
+	}
+	return (SUCCESS);
+}
+
+int	do_unset(char **command, t_env **env)
+{
+	int	flag;
+
+	flag = SUCCESS;
+	++command;
+	while (*command)
+	{
+		flag |= unset_one(*command, env);
+		++command;
+	}
+	return (flag);
 }

@@ -12,70 +12,41 @@
 
 #include "minishell.h"
 
-static int	set_env(t_env *env, char **arg_env)
+static int	is_under_score(char *str)
 {
-	t_env	*new;
-	int		i;
+	return (str && str[0] == '_' && str[1] == '=');
+}
 
-	i = 1;
-	while (arg_env && arg_env[0] && arg_env[i])
+static int	env_set_loop(t_env *env, char **envp)
+{
+	while (*envp)
 	{
-		new = malloc(sizeof(t_env));
-		if (!new)
+		if (!is_under_score(*envp) && \
+				env_init_from_str(&(env->next), *envp))
 			return (ERROR);
-		new->value = ft_strdup(arg_env[i]);
-		if (!new->value)
-			return (ERROR);
-		new->next = NULL;
-		env->next = new;
-		env = new;
-		i++;
+		env = env->next;
+		++envp;
 	}
 	return (SUCCESS);
 }
 
-int	env_init(t_status *status, char **arg_env)
+int	env_set(t_env **env, char **envp)
 {
-	t_env	*env;
-
-	env = malloc(sizeof(t_env));
-	if (!env)
-		return (ERROR);
-	env->value = ft_strdup(arg_env[0]);
-	if (env->value == NULL)
-		return (ERROR);
-	env->next = NULL;
-	status->env_tab = env;
-	return (set_env(env, arg_env));
-}
-
-int	tmp_env_init(t_status *status, char **arg_env)
-{
-	t_env	*env;
-
-	env = malloc(sizeof(t_env));
-	if (!env)
-		return (ERROR);
-	env->value = ft_strdup(arg_env[0]);
-	if (env->value == NULL)
-		return (ERROR);
-	env->next = NULL;
-	status->env_tmp = env;
-	return (set_env(env, arg_env));
-}
-
-int	env_free(t_env *env)
-{
-	t_env	*tmp;
-
-	while (env && env->next)
+	*env = NULL;
+	if (envp == NULL || *envp == NULL)
+		return (SUCCESS);
+	if (is_under_score(*envp))
 	{
-		tmp = env;
-		env = env->next;
-		ft_free(&(tmp->value));
-		ft_free(&(tmp));
+		++*envp;
+		if (*envp == NULL)
+			return (SUCCESS);
 	}
-	ft_free(&(env->value));
-	ft_free(&env);
+	if (env_init_from_str(env, *envp))
+		return (ERROR);
+	if (env_set_loop(*env, envp))
+	{
+		env_all_free(env);
+		return (ERROR);
+	}
 	return (SUCCESS);
 }
