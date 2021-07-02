@@ -67,13 +67,13 @@ int	builtin_exit(t_status *status, t_command *com, int fork_flag)
 	if (flag)
 	{
 		if (!fork_flag)
-			printf("exit\n");
+			ft_putstr_fd("exit\n", 2);
 		error_put2(flag, "exit", com->s[1]);
 		exit(255);
 	}
 	if (com != NULL && com->s[1] != NULL && com->s[2] != NULL)
 		return (error_put(ERROR_EXIT_MANY, "exit"));
 	if (!fork_flag)
-		printf("exit\n");
+		ft_putstr_fd("exit\n", 2);
 	exit(arg);
 }
