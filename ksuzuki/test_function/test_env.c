@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utility3.c                                         :+:      :+:    :+:   */
+/*   test_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkano <tkano@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: ksuzuki <ksuzuki@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/19 10:30:40 by ksuzuki           #+#    #+#             */
-/*   Updated: 2021/06/29 22:57:34 by tkano            ###   ########.fr       */
+/*   Created: 2021/07/01 23:33:23 by ksuzuki           #+#    #+#             */
+/*   Updated: 2021/07/01 23:47:15 by ksuzuki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <stdio.h>
 
-int	ft_isalpha_underbar(int c)
+int main(int argc, char **argv, char **envp)
 {
-	return (ft_isalpha(c) || c == '_');
-}
-
-int	ft_isalnum_underbar(int c)
-{
-	return (ft_isalnum(c) || c == '_');
+	while (*envp)
+	{
+		printf("%s\n", *envp);
+		++envp;
+	}
 }

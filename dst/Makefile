@@ -1,6 +1,5 @@
 SRCDIR	= ./srcs/
 SRCNAME	=	command_utility1.c\
-			debug.c\
 			error.c\
 			ft_malloc.c\
 			main.c\
@@ -29,15 +28,17 @@ SRCNAME	=	command_utility1.c\
 			search_variable.c\
 			error_file.c\
 			search_execve.c\
+			search_execve2.c\
 			env_init.c\
 			env.c\
 			do_unset.c\
 			do_export.c\
 			put_sorted_env.c\
-			env_utility.c\
+			env_utility1.c\
+			env_utility2.c\
+			env_utility3.c\
 			do_pwd.c\
 			do_cd.c\
-			unset_utility.c\
 			hear_document.c\
 			hear_doc_ex.c\
 			heardoc_redirect.c

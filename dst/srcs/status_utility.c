@@ -17,10 +17,9 @@ int	status_init(t_status **status, char **envp)
 	if (ft_malloc(status, sizeof(t_status), 1))
 		return (errno);
 	(*status)->tree = NULL;
-	(*status)->env = envp;
-	if (env_init((*status), envp) || tmp_env_init((*status), envp))
+	if (env_set(&((*status)->env), envp))
 	{
-		free(status);
+		ft_free(status);
 		return (ERROR);
 	}
 	(*status)->exit = 0;
@@ -35,8 +34,7 @@ int	status_turn_finish(t_status *status)
 
 int	status_finish(t_status *status)
 {
-	env_free(status->env_tab);
-	env_free(status->env_tmp);
+	env_all_free(&(status->env));
 	free(status);
 	return (SUCCESS);
 }

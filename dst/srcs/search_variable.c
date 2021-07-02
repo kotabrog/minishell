@@ -12,86 +12,18 @@
 
 #include "minishell.h"
 
-int	env_value_len(const char *env)
-{
-	int	i;
-	int	len_value;
-
-	len_value = 0;
-	i = 0;
-	while (env[i] && env[i] != '=')
-		i++;
-	i += 1;
-	while (env[i])
-	{
-		i++;
-		len_value++;
-	}
-	return (len_value);
-}
-
-int	get_env_value(char *env, char **env_value)
-{
-	int		i;
-	int		j;
-
-	i = 0;
-	while (env[i] && env[i] != '=')
-		i++;
-	if (env[i] != '=')
-	{
-		(*env_value)[0] = '\0';
-		return (1);
-	}
-	i += 1;
-	j = 0;
-	while (env[i])
-		(*env_value)[j++] = env[i++];
-	(*env_value)[j] = '\0';
-	return (SUCCESS);
-}
-
-static int	get_variable_value(char **s, char *var_key, t_env *env)
-{
-	char	env_key[BUFF_SIZE];
-
-	while (env && env->value)
-	{
-		if (!get_env_key(env_key, env->value))
-			return (ERROR);
-		if (strcmp(var_key, env_key) == 0)
-		{
-			*s = malloc(sizeof(char) * (env_value_len(env->value) + 1));
-			if (!*s)
-				return (ERROR);
-			if (get_env_value(env->value, s) == ERROR)
-				return (ERROR);
-		}
-		env = env->next;
-	}
-	return (SUCCESS);
-}
-
 static int	search_variable_env(char **s, char *str, t_env *env, t_ex_flag *fl)
 {
-	char	var_key[BUFF_SIZE];
-	int		i;
+	char	*key;
+	int		key_len;
 
-	if (fl->end > BUFF_SIZE)
-		return (ERROR);
-	*s = ft_strdup("");
-	if (*s == NULL)
-		return (ERROR);
-	i = 0;
-	while (i < fl->end - 1 && ft_isalnum_underbar(str[fl->start + 1 + 1]))
-	{
-		var_key[i] = str[fl->start + 1 + i];
-		i++;
-	}
-	var_key[i] = '\0';
-	if (get_variable_value(s, var_key, env) == ERROR)
-		return (ERROR);
+	key_len = fl->end - fl->start - 1;
 	fl->end -= 1;
+	key = ft_strndup(str + fl->start + 1, key_len);
+	if (key == NULL)
+		return (ERROR);
+	env_get_value(env, key, s);
+	free(key);
 	return (SUCCESS);
 }
 
@@ -108,7 +40,7 @@ int	search_variable(char **buf, char *str, t_ex_flag *fl, t_status *status)
 		s = "$";
 	else
 	{
-		flag = search_variable_env(&s, str, status->env_tab, fl);
+		flag = search_variable_env(&s, str, status->env, fl);
 		if (flag == SUCCESS && s == NULL)
 			return (SUCCESS);
 	}

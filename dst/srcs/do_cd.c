@@ -12,100 +12,74 @@
 
 #include "minishell.h"
 
-static void	pwd_value(t_env *env, char *oldpwd, size_t len)
+static int	get_path(int flag, t_env *env, char **path)
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (env->value[i++])
+	if (flag == 0)
 	{
-		if (i > (int)len)
-			oldpwd[j++] = env->value[i];
-	}
-	oldpwd[j] = '\0';
-}
-
-static char	*get_env_path(t_env *env, const char *var, size_t len)
-{
-	char	*oldpwd;
-	int		s_alloc;
-
-	while (env && env->next != NULL)
-	{
-		if (ft_strncmp(env->value, var, len) == 0)
+		env_get_value(env, "HOME", path);
+		if (*path == NULL)
 		{
-			s_alloc = ft_strlen(env->value) - len;
-			oldpwd = malloc(sizeof(char) * s_alloc + 1);
-			if (!oldpwd)
-				return (NULL);
-			pwd_value(env, oldpwd, len);
-			return (oldpwd);
-		}
-		env = env->next;
-	}
-	return (NULL);
-}
-
-static int	update_oldpwd(t_env *env)
-{
-	char	cwd[PATH_MAX];
-	char	*oldpwd;
-
-	if (getcwd(cwd, PATH_MAX) == NULL)
-		return (ERROR);
-	oldpwd = ft_strjoin("OLDPWD=", cwd);
-	if (!oldpwd)
-		return (ERROR);
-	if (is_env(env, oldpwd) == 0)
-		if (env_add(oldpwd, env) != SUCCESS)
+			error_put(NO_SET_HOME, "cd");
 			return (ERROR);
-	ft_free(&oldpwd);
+		}
+	}
+	else if (flag == 1)
+	{
+		env_get_value(env, "OLDPWD", path);
+		if (*path == NULL)
+		{
+			error_put(NO_SET_OLD, "cd");
+			return (ERROR);
+		}
+	}
 	return (SUCCESS);
 }
 
-static int	go_to_path(int option, t_env *env)
+static int	update_oldpwd(t_env **env)
 {
-	int		ret;
-	char	*env_path;
+	char	cwd[PATH_MAX];
+	char	*key;
+	char	*value;
+	int		flag;
+	t_env	*temp;
 
-	env_path = NULL;
-	if (option == 0)
+	flag = SUCCESS;
+	if (getcwd(cwd, PATH_MAX) == NULL)
+		return (ERROR);
+	value = ft_strdup(cwd);
+	key = ft_strdup("OLDPWD");
+	if (value == NULL || key == NULL)
+		flag = ERROR;
+	temp = env_search_key(*env, "OLDPWD");
+	if (!flag && temp)
+		env_change(key, value, temp);
+	else if (!flag)
+		flag = env_add(key, value, env);
+	if (flag)
 	{
-		if (update_oldpwd(env) != SUCCESS)
-			return (ERROR);
-		env_path = get_env_path(env, "HOME", 4);
-		if (!env_path)
-			return (error_put(NO_SET_HOME, "cd"));
+		free(key);
+		free(value);
 	}
-	else if (option == 1)
-	{
-		env_path = get_env_path(env, "OLDPWD", 6);
-		if (!env_path)
-			return (error_put(NO_SET_OLD, "cd"));
-		if (update_oldpwd(env) != SUCCESS)
-			return (ERROR);
-	}
-	ret = chdir(env_path);
-	ft_free(&env_path);
-	return (ret);
+	return (flag);
 }
 
 int	do_cd(char **command, t_env *env)
 {
-	int		cd_ret;
+	int		flag;
+	char	*path;
 
-	if (!command[1])
-		cd_ret = go_to_path(0, env);
+	flag = SUCCESS;
+	if (command[1] == NULL)
+		flag = get_path(0, env, &path);
 	else if (ft_strcmp(command[1], "-") == 0)
-		cd_ret = go_to_path(1, env);
+		flag = get_path(1, env, &path);
 	else
-	{
-		update_oldpwd(env);
-		cd_ret = chdir(command[1]);
-		if (cd_ret != 0)
-			return (error_put(NO_DIR, "cd"));
-	}
-	return (status_value_conversion(cd_ret));
+		path = command[1];
+	if (flag)
+		return (status_value_conversion(flag));
+	if (update_oldpwd(&env))
+		return (status_value_conversion(ERROR));
+	if (chdir(path))
+		return (status_value_conversion(error_put(NO_DIR, "cd")));
+	return (status_value_conversion(flag));
 }

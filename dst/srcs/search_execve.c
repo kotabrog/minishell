@@ -12,28 +12,15 @@
 
 #include "minishell.h"
 
-static int	get_path(char **path, char **env)
-{
-	*path = NULL;
-	while (*env)
-	{
-		if (ft_strncmp("PATH=", *env, 5) == 0)
-			*path = &((*env)[5]);
-		env++;
-	}
-	return (path == NULL);
-}
-
-static int	get_path_list(char **join_path, char ***path_list, char **env, \
+static int	get_path_list(char **join_path, char ***path_list, t_env *env, \
 	char *com)
 {
 	char	*path;
-	int		flag;
 
 	*path_list = NULL;
 	*join_path = NULL;
-	flag = get_path(&path, env);
-	if (flag)
+	env_get_value(env, "PATH", &path);
+	if (path == NULL)
 		return (ERROR_NOT_FOUND);
 	*path_list = ft_split(path, ':');
 	if (*path_list == NULL)
@@ -58,7 +45,7 @@ static int	decide_search_or_not(char *com)
 	return (FALSE);
 }
 
-static int	path_search_execve(char **com, char **env)
+static int	path_search_execve(char **com, t_env *env, char **env_array)
 {
 	char		*join_path;
 	char		**path_list;
@@ -78,7 +65,7 @@ static int	path_search_execve(char **com, char **env)
 			break ;
 		if (stat(com[0], &sb) == -1 && !ft_free(&(com[0])))
 			continue ;
-		execve(com[0], &com[0], env);
+		execve(com[0], &com[0], env_array);
 		flag = errno;
 		free(com[0]);
 	}
@@ -87,21 +74,25 @@ static int	path_search_execve(char **com, char **env)
 	return (flag);
 }
 
-int	search_execve(char **com, char **env)
+int	search_execve(char **com, t_env *env)
 {
 	int		flag;
 	char	*temp;
+	char	**env_array;
 
 	temp = com[0];
+	if (make_env_array(env, &env_array))
+		return (ERROR);
 	if (decide_search_or_not(com[0]))
 	{
-		execve(com[0], com, env);
+		execve(com[0], com, env_array);
 		flag = errno;
 	}
 	else
 	{
-		flag = path_search_execve(com, env);
+		flag = path_search_execve(com, env, env_array);
 		com[0] = temp;
 	}
+	ft_free_double_char(&env_array);
 	return (flag);
 }
