@@ -68,6 +68,7 @@
 # define NO_SET_HOME -16
 # define NO_SET_OLD -17
 # define NO_DIR -18
+# define ERROR_IS_FILE -19
 
 # define SIGNAL_VALUE 128
 
@@ -175,6 +176,7 @@ int			error_put(int err_num, char *command);
 int			error_put2(int err_num, char *com1, char *com2);
 char		*error_make_massage(int n);
 int			error_file(int error, int exe_flag, char *s);
+int			error_file2(int error, char *com, char *arg);
 int			file_status_check(char *file);
 
 int			ft_malloc(void *pointer, size_t type_size, size_t n);

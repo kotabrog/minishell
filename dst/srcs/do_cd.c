@@ -35,7 +35,7 @@ static int	get_path(int flag, t_env *env, char **path)
 	return (SUCCESS);
 }
 
-static int	update_oldpwd(t_env **env)
+static int	update_environment(t_env **env, char *update_key)
 {
 	char	cwd[PATH_MAX];
 	char	*key;
@@ -47,10 +47,10 @@ static int	update_oldpwd(t_env **env)
 	if (getcwd(cwd, PATH_MAX) == NULL)
 		return (ERROR);
 	value = ft_strdup(cwd);
-	key = ft_strdup("OLDPWD");
+	key = ft_strdup(update_key);
 	if (value == NULL || key == NULL)
 		flag = ERROR;
-	temp = env_search_key(*env, "OLDPWD");
+	temp = env_search_key(*env, update_key);
 	if (!flag && temp)
 		env_change(key, value, temp);
 	else if (!flag)
@@ -77,9 +77,11 @@ int	do_cd(char **command, t_env *env)
 		path = command[1];
 	if (flag)
 		return (status_value_conversion(flag));
-	if (update_oldpwd(&env))
+	if (update_environment(&env, "OLDPWD"))
 		return (status_value_conversion(ERROR));
 	if (chdir(path))
-		return (status_value_conversion(error_put(NO_DIR, "cd")));
+		return (error_file2(errno, "cd", command[1]));
+	if (update_environment(&env, "PWD"))
+		return (status_value_conversion(ERROR));
 	return (status_value_conversion(flag));
 }

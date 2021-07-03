@@ -34,6 +34,7 @@ char	*error_make_massage(int n)
 	err_str[16] = "HOME not set";
 	err_str[17] = "OLDPWD not set";
 	err_str[18] = "No such file or directory";
+	err_str[19] = "Not a directory";
 	return (err_str[n]);
 }
 

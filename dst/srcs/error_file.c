@@ -30,10 +30,24 @@ static int	decide_error_number(int error, int exe_flag, char *s)
 			flag = ERROR;
 		else if (S_ISDIR(sb.st_mode))
 			flag = ERROR_IS_DIR;
+		else if (exe_flag == 2 && S_ISREG(sb.st_mode))
+			flag = ERROR_IS_FILE;
 		else
 			flag = ERROR;
 	}
 	return (flag);
+}
+
+int	error_file2(int error, char *com, char *arg)
+{
+	int	flag;
+
+	if (error > 0)
+		flag = decide_error_number(error, 2, arg);
+	else
+		flag = error;
+	error_put2(flag, com, arg);
+	return (1);
 }
 
 int	error_file(int error, int exe_flag, char *s)
