@@ -12,17 +12,16 @@
 
 #include "minishell.h"
 
-static int	is_under_score(char *str)
-{
-	return (str && str[0] == '_' && str[1] == '=');
-}
-
 static int	env_set_loop(t_env *env, char **envp)
 {
 	while (*envp)
 	{
-		if (!is_under_score(*envp) && \
-				env_init_from_str(&(env->next), *envp))
+		if (!env_search_key(env, *envp))
+		{
+			++envp;
+			continue ;
+		}
+		if (env_init_from_str(&(env->next), *envp))
 			return (ERROR);
 		env = env->next;
 		++envp;
@@ -35,12 +34,6 @@ int	env_set(t_env **env, char **envp)
 	*env = NULL;
 	if (envp == NULL || *envp == NULL)
 		return (SUCCESS);
-	if (is_under_score(*envp))
-	{
-		++*envp;
-		if (*envp == NULL)
-			return (SUCCESS);
-	}
 	if (env_init_from_str(env, *envp))
 		return (ERROR);
 	if (env_set_loop(*env, envp))
