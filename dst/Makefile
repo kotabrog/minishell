@@ -63,6 +63,11 @@ $(NAME)	:	$(OBJS)
 			cp inputrc ~/.inputrc
 			$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
 
+bonus	:	$(OBJS)
+			$(MAKE) -C ./libft
+			cp inputrc ~/.inputrc
+			$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
+
 sani	:	$(OBJS)
 		$(MAKE) -C ./libft
 		$(CC) $(CFLAGS) -fsanitize=address $(OBJS) $(LDFLAGS) -o $(NAME)
@@ -77,4 +82,4 @@ fclean	:
 
 re		: fclean all
 
-.PHONY	: all clean fclean re
+.PHONY	: all clean fclean re bonus
