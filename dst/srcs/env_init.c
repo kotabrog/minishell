@@ -16,7 +16,7 @@ static int	env_set_loop(t_env *env, char **envp)
 {
 	while (*envp)
 	{
-		if (!env_search_key(env, *envp))
+		if (env_search_key(env, *envp))
 		{
 			++envp;
 			continue ;
