@@ -19,7 +19,7 @@ static int	decide_error_number(int error, int exe_flag, char *s)
 
 	if (error == ENOENT)
 	{
-		if (exe_flag)
+		if (exe_flag == TRUE)
 			flag = ERROR_NOT_FOUND;
 		else
 			flag = ENOENT;
