@@ -14,9 +14,11 @@
 
 static int	env_set_loop(t_env *env, char **envp)
 {
+	char	*key;
+
 	while (*envp)
 	{
-		if (env_search_key(env, *envp))
+		if (env_get_key_str(&key, *envp) || env_search_key(env, key))
 		{
 			++envp;
 			continue ;
